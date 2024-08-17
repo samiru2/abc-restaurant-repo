@@ -8,6 +8,16 @@
   <name>abc-restaurant-webapp Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
+  	<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>jstl</artifactId>
+    <version>1.2</version>
+	</dependency>
+  	<dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.33</version> <!-- Use the latest stable version -->
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
