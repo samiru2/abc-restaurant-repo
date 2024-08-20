@@ -135,11 +135,44 @@ public class MenuController extends HttpServlet {
         String description = request.getParameter("description");
         double price = Double.parseDouble(request.getParameter("price"));
         String category = request.getParameter("category");
-        String image = request.getParameter("image");
+        
+        // Handle file upload
+        Part imagePart = request.getPart("image");
+        String imageUrl = null;
 
-        Menu menu = new Menu(menuId, name, description, price, category, image);
+        // Get existing menu
+        Menu existingMenu = menuService.getMenuById(menuId);
+
+        if (imagePart != null && imagePart.getSize() > 0) {
+            // Get the original file name
+            String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+            
+            // Define the path for saving the image files
+            String uploadPath = getServletContext().getRealPath("/images");
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs(); // Create the directory if it doesn't exist
+            }
+
+            // Save the uploaded file
+            try {
+                File file = new File(uploadPath + File.separator + imageFileName);
+                imagePart.write(file.getAbsolutePath());
+                imageUrl = "images/" + imageFileName; // Save URL relative to the web root
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ServletException("File upload failed.");
+            }
+        } else {
+            // If no new image is uploaded, keep the existing image URL
+            imageUrl = existingMenu.getImage();
+        }
+
+        // Update Menu object
+        Menu menu = new Menu(menuId, name, description, price, category, imageUrl);
         menuService.updateMenu(menu);
 
+        // Redirect to the list page
         response.sendRedirect("menu?action=list");
     }
 
