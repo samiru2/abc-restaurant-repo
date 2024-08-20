@@ -1,16 +1,16 @@
 package com.abc.model;
 
 public class Menu {
-
-    private int menuID;
+    
+    private int menuId;
     private String name;
     private String description;
     private double price;
     private String category;
     private String image;
 
-    public Menu(int menuID, String name, String description, double price, String category, String image) {
-        this.menuID = menuID;
+    public Menu(int menuId, String name, String description, double price, String category, String image) {
+        this.menuId = menuId;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -18,34 +18,23 @@ public class Menu {
         this.image = image;
     }
 
-    public Menu(int menuID, String name, double price, String category) {
-        this.menuID = menuID;
+    public Menu(String name, String description, double price, String category, String image) {
         this.name = name;
+        this.description = description;
         this.price = price;
         this.category = category;
-    }
-
-    public Menu(int menuID, String name, double price) {
-        this.menuID = menuID;
-        this.name = name;
-        this.price = price;
-    }
-
-    public Menu(int menuID, double price) {
-        this.menuID = menuID;
-        this.price = price;
+        this.image = image;
     }
 
     public Menu() {
     }
 
-    // Getters and setters
-    public int getMenuID() {
-        return menuID;
+    public int getMenuId() {
+        return menuId;
     }
 
-    public void setMenuID(int menuID) {
-        this.menuID = menuID;
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
     }
 
     public String getName() {

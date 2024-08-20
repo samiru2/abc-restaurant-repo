@@ -33,4 +33,16 @@ public class MenuService {
     public List<Menu> getAllMenus() throws SQLException {
         return menuDAO.getAllMenus();
     }
+    
+    public void updateMenu(Menu menu) {
+        menuDAO.updateMenu(menu);
+    }
+
+    public void deleteMenu(int menuId) {
+        menuDAO.deleteMenu(menuId);
+    }
+
+    public Menu getMenuById(int menuId) {
+        return menuDAO.getMenuById(menuId);
+    }
 }

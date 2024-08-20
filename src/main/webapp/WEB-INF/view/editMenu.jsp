@@ -21,30 +21,30 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Add Menu Item</h1>
-        <form action="menu?action=add" method="post">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="price">Price:</label>
-                <input type="number" class="form-control" step="0.01" id="price" name="price" required>
-            </div>
-            <div class="form-group">
-                <label for="category">Category:</label>
-                <input type="text" class="form-control" id="category" name="category" required>
-            </div>
-            <div class="form-group">
-                <label for="image">Image URL:</label>
-                <input type="text" class="form-control" id="image" name="image">
-            </div>
-            <button type="submit" class="btn btn-primary">Add Menu Item</button>
-        </form>
+        <form action="menu?action=update&id=${menu.menuId}" method="post">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" value="${menu.name}" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea class="form-control" id="description" name="description" required>${menu.description}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" class="form-control" id="price" name="price" step="0.01" value="${menu.price}" required>
+    </div>
+    <div class="form-group">
+        <label for="category">Category:</label>
+        <input type="text" class="form-control" id="category" name="category" value="${menu.category}" required>
+    </div>
+    <div class="form-group">
+        <label for="image">Image URL:</label>
+        <input type="text" class="form-control" id="image" name="image" value="${menu.image}" required>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Update Menu</button>
+</form>
+        
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

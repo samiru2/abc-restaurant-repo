@@ -20,23 +20,32 @@ public class MenuController extends HttpServlet {
 
     private MenuService menuService;
 
+    @Override
     public void init() throws ServletException {
         menuService = MenuService.getInstance();
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null || action.equals("list")) {
             listMenus(request, response);
         } else if (action.equals("add")) {
             showAddForm(request, response);
+        } else if (action.equals("edit")) {
+            showEditForm(request, response);
+        } else if (action.equals("delete")) {
+            deleteMenu(request, response);
         }
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action.equals("add")) {
             addMenu(request, response);
+        } else if (action.equals("update")) {
+            updateMenu(request, response);
         }
     }
 
@@ -59,12 +68,14 @@ public class MenuController extends HttpServlet {
     }
 
     private void addMenu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Retrieve form parameters
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         double price = Double.parseDouble(request.getParameter("price"));
         String category = request.getParameter("category");
         String image = request.getParameter("image");
 
+        // Create Menu object
         Menu menu = new Menu();
         menu.setName(name);
         menu.setDescription(description);
@@ -72,7 +83,38 @@ public class MenuController extends HttpServlet {
         menu.setCategory(category);
         menu.setImage(image);
 
+        // Add Menu to the service
         menuService.addMenu(menu);
+
+        // Redirect to the list page
         response.sendRedirect("menu?action=list");
     }
+    
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int menuId = Integer.parseInt(request.getParameter("id"));
+        Menu existingMenu = menuService.getMenuById(menuId);
+        request.setAttribute("menu", existingMenu);
+        request.getRequestDispatcher("WEB-INF/view/editMenu.jsp").forward(request, response);
+    }
+
+    private void updateMenu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int menuId = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        double price = Double.parseDouble(request.getParameter("price"));
+        String category = request.getParameter("category");
+        String image = request.getParameter("image");
+
+        Menu menu = new Menu(menuId, name, description, price, category, image);
+        menuService.updateMenu(menu);
+
+        response.sendRedirect("menu?action=list");
+    }
+
+    private void deleteMenu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int menuId = Integer.parseInt(request.getParameter("id"));
+        menuService.deleteMenu(menuId);
+        response.sendRedirect("menu?action=list");
+    }
+
 }

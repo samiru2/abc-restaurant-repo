@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-
-	private static final String DB_URL = "jdbc:mysql://localhost:3306/abc_restaurant_db";
+	
+	private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/abc_restaurant_db";
 	private static final String DB_USER = "root";
 	private static final String DB_PASSWORD = "root";
 
@@ -36,4 +36,5 @@ public class DBConnection {
 	public Connection getConnection() {
 		return connection;
 	}
+
 }
