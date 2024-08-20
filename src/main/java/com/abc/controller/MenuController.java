@@ -1,20 +1,25 @@
 package com.abc.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.abc.model.Menu;
 import com.abc.service.MenuService;
 
 @WebServlet("/menu")
+@MultipartConfig
 public class MenuController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -73,7 +78,32 @@ public class MenuController extends HttpServlet {
         String description = request.getParameter("description");
         double price = Double.parseDouble(request.getParameter("price"));
         String category = request.getParameter("category");
-        String image = request.getParameter("image");
+        
+        // Handling file upload
+        Part imagePart = request.getPart("image");
+        String imageUrl = null;
+        
+        if (imagePart != null && imagePart.getSize() > 0) {
+            // Get the original file name
+            String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+
+            // Define the path for saving the image files
+            String uploadPath = getServletContext().getRealPath("/images");
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs(); // Create the directory if it doesn't exist
+            }
+
+            // Save the uploaded file
+            try {
+                File file = new File(uploadPath + File.separator + imageFileName);
+                imagePart.write(file.getAbsolutePath());
+                imageUrl = "images/" + imageFileName; // Save URL relative to the web root
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ServletException("File upload failed.");
+            }
+        }
 
         // Create Menu object
         Menu menu = new Menu();
@@ -81,7 +111,7 @@ public class MenuController extends HttpServlet {
         menu.setDescription(description);
         menu.setPrice(price);
         menu.setCategory(category);
-        menu.setImage(image);
+        menu.setImage(imageUrl); // Save the file URL in the database
 
         // Add Menu to the service
         menuService.addMenu(menu);
@@ -89,6 +119,8 @@ public class MenuController extends HttpServlet {
         // Redirect to the list page
         response.sendRedirect("menu?action=list");
     }
+
+
     
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int menuId = Integer.parseInt(request.getParameter("id"));

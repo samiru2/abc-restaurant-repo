@@ -22,7 +22,7 @@
 <body>
     <div class="container">
         <h1 class="text-center">Add Menu Item</h1>
-        <form action="menu?action=add" method="post">
+        <form action="menu?action=add" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" class="form-control" id="name" name="name" required>
@@ -41,7 +41,7 @@
             </div>
             <div class="form-group">
                 <label for="image">Image URL:</label>
-                <input type="text" class="form-control" id="image" name="image">
+                <input type="file" class="form-control" id="image" name="image">
             </div>
             <button type="submit" class="btn btn-primary">Add Menu Item</button>
         </form>
