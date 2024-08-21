@@ -148,25 +148,47 @@ public class MenuController extends HttpServlet {
 
         Menu existingMenu = menuService.getMenuById(menuId);
 
+        if (existingMenu == null) {
+            request.setAttribute("errorMessage", "Menu item not found.");
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
+            return;
+        }
+
+        // Get the old image URL
+        String oldImageUrl = existingMenu.getImage();
+
         if (imagePart != null && imagePart.getSize() > 0) {
             String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
-            
             String uploadPath = getUploadPath();
             File uploadDir = new File(uploadPath);
+
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
             try {
+                // Save the new image file
                 File file = new File(uploadPath + File.separator + imageFileName);
                 imagePart.write(file.getAbsolutePath());
-                imageUrl = "images/" + imageFileName; 
+                imageUrl = "images/" + imageFileName;
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new ServletException("File upload failed.");
             }
+
+            // Delete the old image file if it exists
+            if (oldImageUrl != null && !oldImageUrl.isEmpty()) {
+                File oldImageFile = new File(uploadPath + File.separator + Paths.get(oldImageUrl).getFileName());
+                if (oldImageFile.exists()) {
+                    boolean deleted = oldImageFile.delete();
+                    if (!deleted) {
+                        System.err.println("Failed to delete the old image file: " + oldImageFile.getAbsolutePath());
+                    }
+                }
+            }
         } else {
-            imageUrl = existingMenu.getImage();
+            // If no new image is uploaded, keep the old image URL
+            imageUrl = oldImageUrl;
         }
 
         Menu menu = new Menu(menuId, name, description, price, category, imageUrl);
@@ -175,9 +197,37 @@ public class MenuController extends HttpServlet {
         response.sendRedirect("menu?action=list");
     }
 
+
     private void deleteMenu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int menuId = Integer.parseInt(request.getParameter("id"));
+
+        // Get the menu item to retrieve the image URL
+        Menu menu = menuService.getMenuById(menuId);
+        if (menu == null) {
+            // Handle case where menu item does not exist
+            request.setAttribute("errorMessage", "Menu item not found.");
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
+            return;
+        }
+
+        String imageUrl = menu.getImage();
+        
+        // Delete the menu item from the database
         menuService.deleteMenu(menuId);
+
+        // Delete the image file from the file system
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            String uploadPath = getUploadPath();
+            File file = new File(uploadPath + File.separator + Paths.get(imageUrl).getFileName());
+            if (file.exists()) {
+                boolean deleted = file.delete();
+                if (!deleted) {
+                    System.err.println("Failed to delete the image file: " + file.getAbsolutePath());
+                }
+            }
+        }
+
+        // Redirect to the list page
         response.sendRedirect("menu?action=list");
     }
 }
