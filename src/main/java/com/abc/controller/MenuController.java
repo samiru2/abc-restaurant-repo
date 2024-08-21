@@ -2,10 +2,12 @@ package com.abc.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -28,6 +30,20 @@ public class MenuController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         menuService = MenuService.getInstance();
+    }
+
+    private String getUploadPath() {
+        Properties properties = new Properties();
+        try (InputStream input = getServletContext().getResourceAsStream("/WEB-INF/classes/config.properties")) {
+            if (input == null) {
+                throw new RuntimeException("Sorry, unable to find config.properties");
+            }
+            properties.load(input);
+            return properties.getProperty("image.upload.path");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("Error reading config.properties", ex);
+        }
     }
 
     @Override
@@ -73,55 +89,46 @@ public class MenuController extends HttpServlet {
     }
 
     private void addMenu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Retrieve form parameters
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         double price = Double.parseDouble(request.getParameter("price"));
         String category = request.getParameter("category");
         
-        // Handling file upload
         Part imagePart = request.getPart("image");
         String imageUrl = null;
         
         if (imagePart != null && imagePart.getSize() > 0) {
-            // Get the original file name
             String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
 
-            // Define the path for saving the image files
-            String uploadPath = getServletContext().getRealPath("/images");
+            String uploadPath = getUploadPath();
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
-                uploadDir.mkdirs(); // Create the directory if it doesn't exist
+                uploadDir.mkdirs();
             }
 
-            // Save the uploaded file
             try {
                 File file = new File(uploadPath + File.separator + imageFileName);
                 imagePart.write(file.getAbsolutePath());
-                imageUrl = "images/" + imageFileName; // Save URL relative to the web root
+                imageUrl = "images/" + imageFileName;
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new ServletException("File upload failed.");
             }
         }
 
-        // Create Menu object
         Menu menu = new Menu();
         menu.setName(name);
         menu.setDescription(description);
         menu.setPrice(price);
         menu.setCategory(category);
-        menu.setImage(imageUrl); // Save the file URL in the database
+        menu.setImage(imageUrl);
 
-        // Add Menu to the service
+
         menuService.addMenu(menu);
 
-        // Redirect to the list page
         response.sendRedirect("menu?action=list");
     }
 
-
-    
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int menuId = Integer.parseInt(request.getParameter("id"));
         Menu existingMenu = menuService.getMenuById(menuId);
@@ -136,43 +143,35 @@ public class MenuController extends HttpServlet {
         double price = Double.parseDouble(request.getParameter("price"));
         String category = request.getParameter("category");
         
-        // Handle file upload
         Part imagePart = request.getPart("image");
         String imageUrl = null;
 
-        // Get existing menu
         Menu existingMenu = menuService.getMenuById(menuId);
 
         if (imagePart != null && imagePart.getSize() > 0) {
-            // Get the original file name
             String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
             
-            // Define the path for saving the image files
-            String uploadPath = getServletContext().getRealPath("/images");
+            String uploadPath = getUploadPath();
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
-                uploadDir.mkdirs(); // Create the directory if it doesn't exist
+                uploadDir.mkdirs();
             }
 
-            // Save the uploaded file
             try {
                 File file = new File(uploadPath + File.separator + imageFileName);
                 imagePart.write(file.getAbsolutePath());
-                imageUrl = "images/" + imageFileName; // Save URL relative to the web root
+                imageUrl = "images/" + imageFileName; 
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new ServletException("File upload failed.");
             }
         } else {
-            // If no new image is uploaded, keep the existing image URL
             imageUrl = existingMenu.getImage();
         }
 
-        // Update Menu object
         Menu menu = new Menu(menuId, name, description, price, category, imageUrl);
         menuService.updateMenu(menu);
 
-        // Redirect to the list page
         response.sendRedirect("menu?action=list");
     }
 
@@ -181,5 +180,4 @@ public class MenuController extends HttpServlet {
         menuService.deleteMenu(menuId);
         response.sendRedirect("menu?action=list");
     }
-
 }
