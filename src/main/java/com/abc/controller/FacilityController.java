@@ -80,6 +80,7 @@ public class FacilityController extends HttpServlet {
             request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
             return;
         }
+
         request.getRequestDispatcher("WEB-INF/view/listFacilities.jsp").forward(request, response);
     }
 
@@ -87,53 +88,138 @@ public class FacilityController extends HttpServlet {
         request.getRequestDispatcher("WEB-INF/view/addFacility.jsp").forward(request, response);
     }
 
+    private void addFacility(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+
+        Part imagePart = request.getPart("image");
+        String imageUrl = null;
+        
+        if (imagePart != null && imagePart.getSize() > 0) {
+            String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+
+            String uploadPath = getUploadPath();
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            try {
+                File file = new File(uploadPath + File.separator + imageFileName);
+                imagePart.write(file.getAbsolutePath());
+                imageUrl = "images/" + imageFileName;
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ServletException("File upload failed.");
+            }
+        }
+
+        Facility facility = new Facility();
+        facility.setName(name);
+        facility.setDescription(description);
+        facility.setImage(imageUrl);
+
+        facilityService.addFacility(facility);
+
+        response.sendRedirect("facility?action=list");
+    }
+
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int facilityId = Integer.parseInt(request.getParameter("facilityId"));
+        int facilityId = Integer.parseInt(request.getParameter("id"));
         Facility existingFacility = facilityService.getFacilityById(facilityId);
         request.setAttribute("facility", existingFacility);
         request.getRequestDispatcher("WEB-INF/view/editFacility.jsp").forward(request, response);
     }
 
-    private void addFacility(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-
-        // Handle file upload
-        Part filePart = request.getPart("image");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        String uploadPath = getUploadPath();
-        if (!fileName.isEmpty()) {
-            filePart.write(uploadPath + File.separator + fileName);
-        }
-
-        Facility newFacility = new Facility(name, description, fileName);
-        facilityService.addFacility(newFacility);
-        response.sendRedirect("facility?action=list");
-    }
-
     private void updateFacility(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int facilityId = Integer.parseInt(request.getParameter("facilityId"));
+        int facilityId = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String description = request.getParameter("description");
+        
+        Part imagePart = request.getPart("image");
+        String imageUrl = null;
 
-        // Handle file upload
-        Part filePart = request.getPart("image");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        String uploadPath = getUploadPath();
-        if (!fileName.isEmpty()) {
-            filePart.write(uploadPath + File.separator + fileName);
-        } else {
-            fileName = request.getParameter("existingImage"); // Keep the existing image if no new image is uploaded
+        Facility existingFacility = facilityService.getFacilityById(facilityId);
+
+        if (existingFacility == null) {
+            request.setAttribute("errorMessage", "Facility item not found.");
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
+            return;
         }
 
-        Facility updatedFacility = new Facility(facilityId, name, description, fileName);
-        facilityService.updateFacility(updatedFacility);
+        // Get the old image URL
+        String oldImageUrl = existingFacility.getImage();
+
+        if (imagePart != null && imagePart.getSize() > 0) {
+            String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+            String uploadPath = getUploadPath();
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            try {
+                // Save the new image file
+                File file = new File(uploadPath + File.separator + imageFileName);
+                imagePart.write(file.getAbsolutePath());
+                imageUrl = "images/" + imageFileName;
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ServletException("File upload failed.");
+            }
+
+            // Delete the old image file if it exists
+            if (oldImageUrl != null && !oldImageUrl.isEmpty()) {
+                File oldImageFile = new File(uploadPath + File.separator + Paths.get(oldImageUrl).getFileName());
+                if (oldImageFile.exists()) {
+                    boolean deleted = oldImageFile.delete();
+                    if (!deleted) {
+                        System.err.println("Failed to delete the old image file: " + oldImageFile.getAbsolutePath());
+                    }
+                }
+            }
+        } else {
+            // If no new image is uploaded, keep the old image URL
+            imageUrl = oldImageUrl;
+        }
+
+        Facility facility = new Facility(facilityId, name, description, imageUrl);
+        facilityService.updateFacility(facility);
+
         response.sendRedirect("facility?action=list");
     }
 
     private void deleteFacility(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int facilityId = Integer.parseInt(request.getParameter("facilityId"));
+        int facilityId = Integer.parseInt(request.getParameter("id"));
+
+        // Get the facility item to retrieve the image URL
+        Facility facility = facilityService.getFacilityById(facilityId);
+        if (facility == null) {
+            // Handle case where facility item does not exist
+            request.setAttribute("errorMessage", "Facility item not found.");
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
+            return;
+        }
+
+        String imageUrl = facility.getImage();
+        
+        // Delete the facility item from the database
         facilityService.deleteFacility(facilityId);
+
+        // Delete the image file from the file system
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            String uploadPath = getUploadPath();
+            File file = new File(uploadPath + File.separator + Paths.get(imageUrl).getFileName());
+            if (file.exists()) {
+                boolean deleted = file.delete();
+                if (!deleted) {
+                    System.err.println("Failed to delete the image file: " + file.getAbsolutePath());
+                }
+            }
+        }
+
+        // Redirect to the list page
         response.sendRedirect("facility?action=list");
     }
 }

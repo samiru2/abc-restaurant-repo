@@ -36,7 +36,7 @@
                         <td>${facility.facilityId}</td>
                         <td>${facility.name}</td>
                         <td>${facility.description}</td>
-                        <td><img src="${pageContext.request.contextPath}/images/${facility.image}" alt="${facility.name}" width="100"/></td>
+                        <td><img src="${facility.image}" alt="${facility.name}" width="100"/></td>
                         <td>
                             <a href="facility?action=edit&id=${facility.facilityId}" class="btn btn-warning btn-sm">Edit</a>
                             <a href="facility?action=delete&id=${facility.facilityId}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</a>
