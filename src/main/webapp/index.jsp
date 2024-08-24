@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,6 +34,8 @@
         <a href="offer?action=add" class="btn btn-light btn-lg">Add New Offer</a>
         <a href="reservation?action=list" class="btn btn-primary btn-lg">View Reservations</a>
         <a href="reservation?action=add" class="btn btn-secondary btn-lg">Add New Reservation</a>
+        <a href="order?action=list" class="btn btn-dark btn-lg">View Orders</a>
+        <a href="order?action=add" class="btn btn-light btn-lg">Add New Order</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
