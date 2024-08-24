@@ -1,0 +1,106 @@
+package com.abc.controller;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.abc.model.Reservation;
+import com.abc.service.ReservationService;
+
+@WebServlet("/reservation")
+public class ReservationController extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    private ReservationService reservationService;
+
+    @Override
+    public void init() throws ServletException {
+        reservationService = ReservationService.getInstance();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if (action == null || action.equals("list")) {
+            listReservations(request, response);
+        } else if (action.equals("add")) {
+            showAddForm(request, response);
+        } else if (action.equals("edit")) {
+            showEditForm(request, response);
+        } else if (action.equals("delete")) {
+            deleteReservation(request, response);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if (action.equals("add")) {
+            addReservation(request, response);
+        } else if (action.equals("update")) {
+            updateReservation(request, response);
+        }
+    }
+
+    private void listReservations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Reservation> reservations = new ArrayList<>();
+        try {
+            reservations = reservationService.getAllReservations();
+            request.setAttribute("reservations", reservations);
+            request.getRequestDispatcher("WEB-INF/view/listReservations.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
+        }
+    }
+
+
+    private void showAddForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("WEB-INF/view/addReservation.jsp").forward(request, response);
+    }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int reservationID = Integer.parseInt(request.getParameter("id"));
+        Reservation existingReservation = reservationService.getReservationById(reservationID);
+        request.setAttribute("reservation", existingReservation);
+        request.getRequestDispatcher("WEB-INF/view/editReservation.jsp").forward(request, response);
+    }
+
+    private void addReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int userID = Integer.parseInt(request.getParameter("userID"));
+        String date = request.getParameter("date");
+        String time = request.getParameter("time");
+        int numberOfPeople = Integer.parseInt(request.getParameter("numberOfPeople"));
+        String status = request.getParameter("status");
+
+        Reservation newReservation = new Reservation(userID, date, time, numberOfPeople, status);
+        reservationService.addReservation(newReservation);
+        response.sendRedirect("reservation?action=list");
+    }
+
+    private void updateReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int reservationID = Integer.parseInt(request.getParameter("reservationID"));
+        int userID = Integer.parseInt(request.getParameter("userID"));
+        String date = request.getParameter("date");
+        String time = request.getParameter("time");
+        int numberOfPeople = Integer.parseInt(request.getParameter("numberOfPeople"));
+        String status = request.getParameter("status");
+
+        Reservation reservation = new Reservation(reservationID, userID, date, time, numberOfPeople, status);
+        reservationService.updateReservation(reservation);
+        response.sendRedirect("reservation?action=list");
+    }
+
+    private void deleteReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int reservationID = Integer.parseInt(request.getParameter("id"));
+        reservationService.deleteReservation(reservationID);
+        response.sendRedirect("reservation?action=list");
+    }
+}
+

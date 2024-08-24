@@ -21,7 +21,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="display-4">Welcome to Management Dashboard</h1>
+        <h1 class="display-5">Welcome to Management Dashboard</h1>
         <p class="lead">Efficiently manage your menus and users with our tool.</p>
         <a href="menu?action=list" class="btn btn-primary btn-lg">View Menus</a>
         <a href="menu?action=add" class="btn btn-secondary btn-lg">Add New Menu</a>
@@ -31,6 +31,8 @@
         <a href="facility?action=add" class="btn btn-danger btn-lg">Add New Facility</a>
         <a href="offer?action=list" class="btn btn-dark btn-lg">View Offers</a>
         <a href="offer?action=add" class="btn btn-light btn-lg">Add New Offer</a>
+        <a href="reservation?action=list" class="btn btn-primary btn-lg">View Reservations</a>
+        <a href="reservation?action=add" class="btn btn-secondary btn-lg">Add New Reservation</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
