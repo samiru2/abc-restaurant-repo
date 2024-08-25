@@ -10,17 +10,17 @@
         .container {
             margin-top: 50px;
         }
-        .table {
-            margin: auto;
-            width: 80%;
+        .btn-primary {
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Reservation List</h1>
-        <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
+        <h2>Reservation List</h2>
+        <a href="reservation?action=add" class="btn btn-primary">Add New Reservation</a>
+        <table class="table table-bordered">
+            <thead>
                 <tr class="table-dark">
                     <th>Reservation ID</th>
                     <th>User ID</th>
@@ -28,7 +28,7 @@
                     <th>Time</th>
                     <th>Number of People</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,15 +42,12 @@
                         <td>${reservation.status}</td>
                         <td>
                             <a href="reservation?action=edit&id=${reservation.reservationID}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="reservation?action=delete&id=${reservation.reservationID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</a>
+                            <a href="reservation?action=delete&id=${reservation.reservationID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this reservation?');">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <div class="text-center">
-            <a href="reservation?action=add" class="btn btn-primary">Add New Reservation</a>
-        </div>
     </div>
 </body>
 </html>
