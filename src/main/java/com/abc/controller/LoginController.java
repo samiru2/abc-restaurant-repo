@@ -11,14 +11,14 @@ import javax.servlet.http.HttpSession;
 import com.abc.model.User;
 import com.abc.service.UserService;
 
-@WebServlet(urlPatterns = {"/login", "/AdminDashboard", "/StaffDashboard"})
+@WebServlet(urlPatterns = {"/login", "/Dashboard"})
 public class LoginController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UserService userService;
 
     @Override
     public void init() throws ServletException {
-    	//Initialize singleton pattern
+        // Initialize the UserService using the singleton pattern
         userService = UserService.getInstance();
     }
 
@@ -26,7 +26,7 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getServletPath().equals("/login")) {
             handleLogin(request, response);
-        } else {
+        } else if (request.getServletPath().equals("/Dashboard")) {
             handleDashboard(request, response);
         }
     }
@@ -45,12 +45,9 @@ public class LoginController extends HttpServlet {
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
+            session.setAttribute("userRole", user.getRole()); 
 
-            if (user.getRole().equalsIgnoreCase("admin")) {
-                response.sendRedirect("AdminDashboard");
-            } else if (user.getRole().equalsIgnoreCase("staff")) {
-                response.sendRedirect("StaffDashboard");
-            }
+            response.sendRedirect("Dashboard");
         } else {
             response.sendRedirect("login.jsp?error=true");
         }
@@ -61,19 +58,7 @@ public class LoginController extends HttpServlet {
         User loggedUser = (User) session.getAttribute("loggedUser");
 
         if (loggedUser != null) {
-            if (request.getServletPath().equals("/AdminDashboard")) {
-                if (loggedUser.getRole().equalsIgnoreCase("admin")) {
-                    request.getRequestDispatcher("WEB-INF/view/AdminDashboard.jsp").forward(request, response);
-                } else {
-                    response.sendRedirect("StaffDashboard");
-                }
-            } else if (request.getServletPath().equals("/StaffDashboard")) {
-                if (loggedUser.getRole().equalsIgnoreCase("staff")) {
-                    request.getRequestDispatcher("WEB-INF/view/StaffDashboard.jsp").forward(request, response);
-                } else {
-                    response.sendRedirect("AdminDashboard");
-                }
-            }
+            request.getRequestDispatcher("WEB-INF/view/Dashboard.jsp").forward(request, response);
         } else {
             response.sendRedirect("login.jsp");
         }

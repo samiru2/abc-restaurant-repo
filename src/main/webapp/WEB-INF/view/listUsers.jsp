@@ -31,6 +31,7 @@
                 <tr class="table-dark">
                     <th>User ID</th>
                     <th>Username</th>
+                    <th>Password</th>
                     <th>Phone</th>
                     <th>Email</th>
                     <th>Role</th>
@@ -42,6 +43,7 @@
                     <tr>
                         <td>${user.userId}</td>
                         <td>${user.username}</td>
+                        <td>${user.password}</td>
                         <td>${user.phone}</td>
                         <td>${user.email}</td>
                         <td>${user.role}</td>
