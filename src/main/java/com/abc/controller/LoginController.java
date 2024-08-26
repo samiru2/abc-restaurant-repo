@@ -45,11 +45,12 @@ public class LoginController extends HttpServlet {
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
-            session.setAttribute("userRole", user.getRole()); 
+            session.setAttribute("userRole", user.getRole());
 
             response.sendRedirect("Dashboard");
         } else {
-            response.sendRedirect("login.jsp?error=true");
+            request.setAttribute("error", true);
+            request.getRequestDispatcher("WEB-INF/view/login.jsp").forward(request, response);
         }
     }
 
@@ -60,7 +61,7 @@ public class LoginController extends HttpServlet {
         if (loggedUser != null) {
             request.getRequestDispatcher("WEB-INF/view/Dashboard.jsp").forward(request, response);
         } else {
-            response.sendRedirect("login.jsp");
+            request.getRequestDispatcher("WEB-INF/view/login.jsp").forward(request, response);
         }
     }
 }
