@@ -11,41 +11,71 @@ import javax.servlet.http.HttpSession;
 import com.abc.model.User;
 import com.abc.service.UserService;
 
-@WebServlet("/login")
+@WebServlet(urlPatterns = {"/login", "/AdminDashboard", "/StaffDashboard"})
 public class LoginController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UserService userService;
 
-    public LoginController() {
-        this.userService = new UserService(); // Initialize the UserService instance
+    @Override
+    public void init() throws ServletException {
+    	//Initialize singleton pattern
+        userService = UserService.getInstance();
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        // Validate the login credentials using the UserService
-        User user = userService.validateLogin(username, password);
-
-        if (user != null) {
-            // Create a session and store the logged-in user
-            HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", user);
-
-            // Redirect based on the user's role
-            if (user.getRole().equalsIgnoreCase("admin")) {
-                response.sendRedirect("AdminDashboard"); // Redirect to Admin Dashboard
-            } else if (user.getRole().equalsIgnoreCase("staff")) {
-                response.sendRedirect("StaffDashboard"); // Redirect to a view with restricted permissions
-            }
+        if (request.getServletPath().equals("/login")) {
+            handleLogin(request, response);
         } else {
-            // Redirect back to login with an error message
-            response.sendRedirect("login.jsp?error=true");
+            handleDashboard(request, response);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response); // Handle both GET and POST requests the same way
+        doPost(request, response);
+    }
+
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        User user = userService.validateLogin(username, password);
+
+        if (user != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("loggedUser", user);
+
+            if (user.getRole().equalsIgnoreCase("admin")) {
+                response.sendRedirect("AdminDashboard");
+            } else if (user.getRole().equalsIgnoreCase("staff")) {
+                response.sendRedirect("StaffDashboard");
+            }
+        } else {
+            response.sendRedirect("login.jsp?error=true");
+        }
+    }
+
+    private void handleDashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (loggedUser != null) {
+            if (request.getServletPath().equals("/AdminDashboard")) {
+                if (loggedUser.getRole().equalsIgnoreCase("admin")) {
+                    request.getRequestDispatcher("WEB-INF/view/AdminDashboard.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect("StaffDashboard");
+                }
+            } else if (request.getServletPath().equals("/StaffDashboard")) {
+                if (loggedUser.getRole().equalsIgnoreCase("staff")) {
+                    request.getRequestDispatcher("WEB-INF/view/StaffDashboard.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect("AdminDashboard");
+                }
+            }
+        } else {
+            response.sendRedirect("login.jsp");
+        }
     }
 }
