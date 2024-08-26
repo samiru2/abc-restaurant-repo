@@ -162,4 +162,48 @@ public class UserDAO {
 
         return users;
     }
+
+    /**
+     * Retrieves a user by username and password.
+     * @param username The username to search for.
+     * @param password The password to match.
+     * @return A User object if the credentials match; otherwise, null.
+     */
+    public User getUserByUsernameAndPassword(String username, String password) {
+        User user = null;
+        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConnectionFactory.getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            statement.setString(2, password);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user = new User(
+                        resultSet.getInt("userId"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("phone"),
+                        resultSet.getString("email"),
+                        resultSet.getString("role")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return user;
+    }
 }

@@ -9,7 +9,7 @@ public class UserService {
     private static UserService instance;
     private UserDAO userDAO;
 
-    private UserService() {
+    public UserService() {
         this.userDAO = new UserDAO();
     }
 
@@ -42,5 +42,16 @@ public class UserService {
 
     public User getUserById(int userId) {
         return userDAO.getUserById(userId);
+    }
+
+    /**
+     * Validates the login credentials.
+     * @param username The username entered by the user.
+     * @param password The password entered by the user.
+     * @return A User object if the credentials are valid; otherwise, null.
+     */
+    public User validateLogin(String username, String password) {
+        // Call the DAO to get the user by username and password
+        return userDAO.getUserByUsernameAndPassword(username, password);
     }
 }
