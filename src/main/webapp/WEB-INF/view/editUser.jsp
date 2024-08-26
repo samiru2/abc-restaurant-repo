@@ -41,7 +41,11 @@
             </div>
             <div class="form-group">
                 <label for="role">Role:</label>
-                <input type="text" class="form-control" id="role" name="role" value="${user.role}">
+                <select class="form-control" id="role" name="role">
+                    <option value="admin" <c:if test="${user.role == 'admin'}">selected</c:if>>Admin</option>
+                    <option value="staff" <c:if test="${user.role == 'staff'}">selected</c:if>>Staff</option>
+                    <option value="customer" <c:if test="${user.role == 'customer'}">selected</c:if>>Customer</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Update User</button>
         </form>

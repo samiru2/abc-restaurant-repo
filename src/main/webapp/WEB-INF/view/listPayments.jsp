@@ -54,7 +54,7 @@
             </tbody>
         </table>
     </div>
-    <a href="AdminDashboard" class="btn btn-secondary back-button">
+    <a href="Dashboard" class="btn btn-secondary back-button">
         <i class="bi bi-arrow-left"></i> Back
     </a>
 </body>

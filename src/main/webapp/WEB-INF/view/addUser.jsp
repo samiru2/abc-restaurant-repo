@@ -41,7 +41,11 @@
             </div>
             <div class="form-group">
                 <label for="role">Role:</label>
-                <input type="text" class="form-control" id="role" name="role">
+                <select class="form-control" id="role" name="role">
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                    <option value="customer">Customer</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Add User</button>
         </form>

@@ -6,7 +6,7 @@
     <title>List Reservations</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"> <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         .container {
             margin-top: 50px;
@@ -56,7 +56,7 @@
             </tbody>
         </table>
     </div>
-    <a href="AdminDashboard" class="btn btn-secondary back-button">
+    <a href="Dashboard" class="btn btn-secondary back-button">
         <i class="bi bi-arrow-left"></i> Back
     </a>
 </body>
