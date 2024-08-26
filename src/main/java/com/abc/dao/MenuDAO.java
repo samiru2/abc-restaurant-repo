@@ -12,7 +12,6 @@ import com.abc.model.Menu;
 
 public class MenuDAO {
 
-    // Method to add a menu item
 	public void addMenu(Menu menu) {
 	    String query = "INSERT INTO menu (name, description, price, category, image) VALUES (?, ?, ?, ?, ?)";
 	    Connection connection = null;
@@ -43,10 +42,9 @@ public class MenuDAO {
         }
 	}
 
-    // Method to get all menu items
     public List<Menu> getAllMenus() throws SQLException {
         List<Menu> menus = new ArrayList<>();
-        String query = "SELECT * FROM menu";
+        String query = "SELECT * FROM menu ORDER BY menuID DESC";
 
         Connection connection = DBConnectionFactory.getConnection();
         Statement statement = connection.createStatement();
@@ -67,7 +65,6 @@ public class MenuDAO {
         return menus;
     }
     
- // Method to update a menu item
     public void updateMenu(Menu menu) {
         String query = "UPDATE menu SET name = ?, description = ?, price = ?, category = ?, image = ? WHERE menuID = ?";
         Connection connection = null;
@@ -81,7 +78,7 @@ public class MenuDAO {
             statement.setDouble(3, menu.getPrice());
             statement.setString(4, menu.getCategory());
             statement.setString(5, menu.getImage());
-            statement.setInt(6, menu.getMenuId()); // Ensure this matches your model's field name
+            statement.setInt(6, menu.getMenuId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,7 +92,6 @@ public class MenuDAO {
         }
     }
 
-    // Method to get a single menu item by ID (for editing)
     public Menu getMenuById(int menuId) {
         String query = "SELECT * FROM menu WHERE menuID = ?";
         Connection connection = null;
@@ -132,7 +128,6 @@ public class MenuDAO {
         return menu;
     }
     
-    // Method to delete a menu item
     public void deleteMenu(int menuId) {
         String query = "DELETE FROM menu WHERE menuID = ?";
         Connection connection = null;

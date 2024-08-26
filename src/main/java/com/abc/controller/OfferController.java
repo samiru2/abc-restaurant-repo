@@ -150,7 +150,6 @@ public class OfferController extends HttpServlet {
             return;
         }
 
-        // Get the old image URL
         String oldImageUrl = existingOffer.getImage();
 
         if (imagePart != null && imagePart.getSize() > 0) {
@@ -163,7 +162,6 @@ public class OfferController extends HttpServlet {
             }
 
             try {
-                // Save the new image file
                 File file = new File(uploadPath + File.separator + imageFileName);
                 imagePart.write(file.getAbsolutePath());
                 imageUrl = "images/" + imageFileName;
@@ -172,7 +170,6 @@ public class OfferController extends HttpServlet {
                 throw new ServletException("File upload failed.");
             }
 
-            // Delete the old image file if it exists
             if (oldImageUrl != null && !oldImageUrl.isEmpty()) {
                 File oldImageFile = new File(uploadPath + File.separator + Paths.get(oldImageUrl).getFileName());
                 if (oldImageFile.exists()) {
@@ -183,7 +180,6 @@ public class OfferController extends HttpServlet {
                 }
             }
         } else {
-            // If no new image is uploaded, keep the old image URL
             imageUrl = oldImageUrl;
         }
 
@@ -196,10 +192,8 @@ public class OfferController extends HttpServlet {
     private void deleteOffer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int offerId = Integer.parseInt(request.getParameter("id"));
 
-        // Get the offer item to retrieve the image URL
         Offer offer = offerService.getOfferById(offerId);
         if (offer == null) {
-            // Handle case where offer item does not exist
             request.setAttribute("errorMessage", "Offer not found.");
             request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
             return;
@@ -207,10 +201,8 @@ public class OfferController extends HttpServlet {
 
         String imageUrl = offer.getImage();
         
-        // Delete the offer item from the database
         offerService.deleteOffer(offerId);
 
-        // Delete the image file from the file system
         if (imageUrl != null && !imageUrl.isEmpty()) {
             String uploadPath = getUploadPath();
             File file = new File(uploadPath + File.separator + Paths.get(imageUrl).getFileName());
@@ -222,7 +214,6 @@ public class OfferController extends HttpServlet {
             }
         }
 
-        // Redirect to the list page
         response.sendRedirect("offer?action=list");
     }
 }

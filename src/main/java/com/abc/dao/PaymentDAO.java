@@ -12,7 +12,6 @@ import com.abc.model.Payment;
 
 public class PaymentDAO {
 
-    // Method to add a payment
     public void addPayment(Payment payment) {
         String query = "INSERT INTO payments (orderID, dateTime, paymentMethod, price) VALUES (?, ?, ?, ?)";
         Connection connection = null;
@@ -37,7 +36,6 @@ public class PaymentDAO {
         }
     }
 
-    // Method to get a payment by ID
     public Payment getPaymentById(int paymentID) {
         String query = "SELECT * FROM payments WHERE paymentID = ?";
         Connection connection = null;
@@ -74,7 +72,6 @@ public class PaymentDAO {
         return payment;
     }
 
-    // Method to update a payment
     public void updatePayment(Payment payment) {
         String query = "UPDATE payments SET orderID = ?, dateTime = ?, paymentMethod = ?, price = ? WHERE paymentID = ?";
         Connection connection = null;
@@ -100,7 +97,6 @@ public class PaymentDAO {
         }
     }
 
-    // Method to delete a payment
     public void deletePayment(int paymentID) {
         String query = "DELETE FROM payments WHERE paymentID = ?";
         Connection connection = null;
@@ -122,10 +118,9 @@ public class PaymentDAO {
         }
     }
 
-    // Method to get all payments
     public List<Payment> getAllPayments() {
         List<Payment> payments = new ArrayList<>();
-        String query = "SELECT * FROM payments";
+        String query = "SELECT * FROM payments ORDER BY paymentID DESC";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;

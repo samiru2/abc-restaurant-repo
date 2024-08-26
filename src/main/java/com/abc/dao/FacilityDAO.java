@@ -12,7 +12,6 @@ import com.abc.model.Facility;
 
 public class FacilityDAO {
 
-    // Method to add a facility item
     public void addFacility(Facility facility) {
         String query = "INSERT INTO facilities (name, description, image) VALUES (?, ?, ?)";
         Connection connection = null;
@@ -38,10 +37,9 @@ public class FacilityDAO {
         }
     }
 
-    // Method to get all facility items
     public List<Facility> getAllFacilities() throws SQLException {
         List<Facility> facilities = new ArrayList<>();
-        String query = "SELECT * FROM facilities";
+        String query = "SELECT * FROM facilities ORDER BY facilityID DESC";
 
         Connection connection = DBConnectionFactory.getConnection();
         Statement statement = connection.createStatement();
@@ -60,7 +58,6 @@ public class FacilityDAO {
         return facilities;
     }
 
-    // Method to update a facility item
     public void updateFacility(Facility facility) {
         String query = "UPDATE facilities SET name = ?, description = ?, image = ? WHERE facilityID = ?";
         Connection connection = null;
@@ -87,7 +84,6 @@ public class FacilityDAO {
         }
     }
 
-    // Method to get a single facility item by ID (for editing)
     public Facility getFacilityById(int facilityId) {
         String query = "SELECT * FROM facilities WHERE facilityID = ?";
         Connection connection = null;
@@ -123,7 +119,6 @@ public class FacilityDAO {
         return facility;
     }
 
-    // Method to delete a facility item
     public void deleteFacility(int facilityId) {
         String query = "DELETE FROM facilities WHERE facilityID = ?";
         Connection connection = null;

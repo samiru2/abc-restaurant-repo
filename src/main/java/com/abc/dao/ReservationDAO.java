@@ -12,7 +12,6 @@ import com.abc.model.Reservation;
 
 public class ReservationDAO {
 
-    // Method to add a reservation
     public void addReservation(Reservation reservation) {
         String query = "INSERT INTO reservations (userID, date, time, numberOfPeople, status) VALUES (?, ?, ?, ?, ?)";
         Connection connection = null;
@@ -38,7 +37,6 @@ public class ReservationDAO {
         }
     }
 
-    // Method to get a reservation by ID
     public Reservation getReservationById(int reservationID) {
         String query = "SELECT * FROM reservations WHERE reservationID = ?";
         Connection connection = null;
@@ -76,7 +74,6 @@ public class ReservationDAO {
         return reservation;
     }
 
-    // Method to update a reservation
     public void updateReservation(Reservation reservation) {
         String query = "UPDATE reservations SET userID = ?, date = ?, time = ?, numberOfPeople = ?, status = ? WHERE reservationID = ?";
         Connection connection = null;
@@ -103,7 +100,6 @@ public class ReservationDAO {
         }
     }
 
-    // Method to delete a reservation
     public void deleteReservation(int reservationID) {
         String query = "DELETE FROM reservations WHERE reservationID = ?";
         Connection connection = null;
@@ -125,10 +121,9 @@ public class ReservationDAO {
         }
     }
 
-    // Method to get all reservations
     public List<Reservation> getAllReservations() {
         List<Reservation> reservations = new ArrayList<>();
-        String query = "SELECT * FROM reservations";
+        String query = "SELECT * FROM reservations ORDER BY reservationID DESC";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;

@@ -12,7 +12,6 @@ import com.abc.model.User;
 
 public class UserDAO {
 
-    // Method to add a user
     public void addUser(User user) {
         String query = "INSERT INTO users (username, password, phone, email, role) VALUES (?, ?, ?, ?, ?)";
         Connection connection = null;
@@ -38,7 +37,6 @@ public class UserDAO {
         }
     }
 
-    // Method to get a user by Id
     public User getUserById(int userId) {
         String query = "SELECT * FROM users WHERE userId = ?";
         Connection connection = null;
@@ -76,7 +74,6 @@ public class UserDAO {
         return user;
     }
 
-    // Method to update a user
     public void updateUser(User user) {
         String query = "UPDATE users SET username = ?, password = ?, phone = ?, email = ?, role = ? WHERE userId = ?";
         Connection connection = null;
@@ -103,7 +100,6 @@ public class UserDAO {
         }
     }
 
-    // Method to delete a user
     public void deleteUser(int userId) {
         String query = "DELETE FROM users WHERE userId = ?";
         Connection connection = null;
@@ -125,10 +121,9 @@ public class UserDAO {
         }
     }
 
-    // Method to get all users
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM users";
+        String query = "SELECT * FROM users ORDER BY userID DESC";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -163,12 +158,7 @@ public class UserDAO {
         return users;
     }
 
-    /**
-     * Retrieves a user by username and password.
-     * @param username The username to search for.
-     * @param password The password to match.
-     * @return A User object if the credentials match; otherwise, null.
-     */
+
     public User getUserByUsernameAndPassword(String username, String password) {
         User user = null;
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";

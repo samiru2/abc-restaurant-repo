@@ -12,7 +12,6 @@ import com.abc.model.Order;
 
 public class OrderDAO {
 
-    // Method to add an order
     public void addOrder(Order order) {
         String query = "INSERT INTO orders (userID, menuID, type, totalPrice, status) VALUES (?, ?, ?, ?, ?)";
         Connection connection = null;
@@ -38,7 +37,6 @@ public class OrderDAO {
         }
     }
 
-    // Method to get an order by ID
     public Order getOrderById(int orderID) {
         String query = "SELECT * FROM orders WHERE orderID = ?";
         Connection connection = null;
@@ -76,7 +74,6 @@ public class OrderDAO {
         return order;
     }
 
-    // Method to update an order
     public void updateOrder(Order order) {
         String query = "UPDATE orders SET userID = ?, menuID = ?, type = ?, totalPrice = ?, status = ? WHERE orderID = ?";
         Connection connection = null;
@@ -103,7 +100,6 @@ public class OrderDAO {
         }
     }
 
-    // Method to delete an order
     public void deleteOrder(int orderID) {
         String query = "DELETE FROM orders WHERE orderID = ?";
         Connection connection = null;
@@ -125,10 +121,9 @@ public class OrderDAO {
         }
     }
 
-    // Method to get all orders
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
-        String query = "SELECT * FROM orders";
+        String query = "SELECT * FROM orders ORDER BY orderID DESC";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;

@@ -154,7 +154,6 @@ public class MenuController extends HttpServlet {
             return;
         }
 
-        // Get the old image URL
         String oldImageUrl = existingMenu.getImage();
 
         if (imagePart != null && imagePart.getSize() > 0) {
@@ -167,7 +166,6 @@ public class MenuController extends HttpServlet {
             }
 
             try {
-                // Save the new image file
                 File file = new File(uploadPath + File.separator + imageFileName);
                 imagePart.write(file.getAbsolutePath());
                 imageUrl = "images/" + imageFileName;
@@ -176,7 +174,6 @@ public class MenuController extends HttpServlet {
                 throw new ServletException("File upload failed.");
             }
 
-            // Delete the old image file if it exists
             if (oldImageUrl != null && !oldImageUrl.isEmpty()) {
                 File oldImageFile = new File(uploadPath + File.separator + Paths.get(oldImageUrl).getFileName());
                 if (oldImageFile.exists()) {
@@ -187,7 +184,6 @@ public class MenuController extends HttpServlet {
                 }
             }
         } else {
-            // If no new image is uploaded, keep the old image URL
             imageUrl = oldImageUrl;
         }
 
@@ -201,10 +197,8 @@ public class MenuController extends HttpServlet {
     private void deleteMenu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int menuId = Integer.parseInt(request.getParameter("id"));
 
-        // Get the menu item to retrieve the image URL
         Menu menu = menuService.getMenuById(menuId);
         if (menu == null) {
-            // Handle case where menu item does not exist
             request.setAttribute("errorMessage", "Menu item not found.");
             request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
             return;
@@ -212,10 +206,8 @@ public class MenuController extends HttpServlet {
 
         String imageUrl = menu.getImage();
         
-        // Delete the menu item from the database
         menuService.deleteMenu(menuId);
 
-        // Delete the image file from the file system
         if (imageUrl != null && !imageUrl.isEmpty()) {
             String uploadPath = getUploadPath();
             File file = new File(uploadPath + File.separator + Paths.get(imageUrl).getFileName());
@@ -227,7 +219,6 @@ public class MenuController extends HttpServlet {
             }
         }
 
-        // Redirect to the list page
         response.sendRedirect("menu?action=list");
     }
 }

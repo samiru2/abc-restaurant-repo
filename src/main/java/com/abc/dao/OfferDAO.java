@@ -12,7 +12,6 @@ import com.abc.model.Offer;
 
 public class OfferDAO {
 
-    // Method to add an offer
     public void addOffer(Offer offer) {
         String query = "INSERT INTO offers (title, description, price, image) VALUES (?, ?, ?, ?)";
         Connection connection = null;
@@ -37,10 +36,9 @@ public class OfferDAO {
         }
     }
 
-    // Method to get all offers
     public List<Offer> getAllOffers() throws SQLException {
         List<Offer> offers = new ArrayList<>();
-        String query = "SELECT * FROM offers";
+        String query = "SELECT * FROM offers ORDER BY offerID DESC";
 
         Connection connection = DBConnectionFactory.getConnection();
         Statement statement = connection.createStatement();
@@ -60,7 +58,6 @@ public class OfferDAO {
         return offers;
     }
 
-    // Method to update an offer
     public void updateOffer(Offer offer) {
         String query = "UPDATE offers SET title = ?, description = ?, price = ?, image = ? WHERE offerID = ?";
         Connection connection = null;
@@ -86,7 +83,6 @@ public class OfferDAO {
         }
     }
 
-    // Method to get an offer by ID
     public Offer getOfferById(int offerId) {
         String query = "SELECT * FROM offers WHERE offerID = ?";
         Connection connection = null;
@@ -121,7 +117,6 @@ public class OfferDAO {
         return offer;
     }
 
-    // Method to delete an offer
     public void deleteOffer(int offerId) {
         String query = "DELETE FROM offers WHERE offerID = ?";
         Connection connection = null;

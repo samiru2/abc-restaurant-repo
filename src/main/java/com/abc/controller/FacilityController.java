@@ -147,7 +147,7 @@ public class FacilityController extends HttpServlet {
             return;
         }
 
-        // Get the old image URL
+        
         String oldImageUrl = existingFacility.getImage();
 
         if (imagePart != null && imagePart.getSize() > 0) {
@@ -160,7 +160,6 @@ public class FacilityController extends HttpServlet {
             }
 
             try {
-                // Save the new image file
                 File file = new File(uploadPath + File.separator + imageFileName);
                 imagePart.write(file.getAbsolutePath());
                 imageUrl = "images/" + imageFileName;
@@ -169,7 +168,6 @@ public class FacilityController extends HttpServlet {
                 throw new ServletException("File upload failed.");
             }
 
-            // Delete the old image file if it exists
             if (oldImageUrl != null && !oldImageUrl.isEmpty()) {
                 File oldImageFile = new File(uploadPath + File.separator + Paths.get(oldImageUrl).getFileName());
                 if (oldImageFile.exists()) {
@@ -180,7 +178,7 @@ public class FacilityController extends HttpServlet {
                 }
             }
         } else {
-            // If no new image is uploaded, keep the old image URL
+            
             imageUrl = oldImageUrl;
         }
 
@@ -193,10 +191,8 @@ public class FacilityController extends HttpServlet {
     private void deleteFacility(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int facilityId = Integer.parseInt(request.getParameter("id"));
 
-        // Get the facility item to retrieve the image URL
         Facility facility = facilityService.getFacilityById(facilityId);
         if (facility == null) {
-            // Handle case where facility item does not exist
             request.setAttribute("errorMessage", "Facility item not found.");
             request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
             return;
@@ -204,10 +200,8 @@ public class FacilityController extends HttpServlet {
 
         String imageUrl = facility.getImage();
         
-        // Delete the facility item from the database
         facilityService.deleteFacility(facilityId);
 
-        // Delete the image file from the file system
         if (imageUrl != null && !imageUrl.isEmpty()) {
             String uploadPath = getUploadPath();
             File file = new File(uploadPath + File.separator + Paths.get(imageUrl).getFileName());
@@ -219,7 +213,6 @@ public class FacilityController extends HttpServlet {
             }
         }
 
-        // Redirect to the list page
         response.sendRedirect("facility?action=list");
     }
 }
