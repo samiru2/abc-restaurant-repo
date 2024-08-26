@@ -56,7 +56,7 @@
             </tbody>
         </table>
     </div>
-    <a href="AdminDashboard.jsp" class="btn btn-secondary back-button">
+    <a href="AdminDashboard" class="btn btn-secondary back-button">
         <i class="bi bi-arrow-left"></i> Back
     </a>
 </body>
