@@ -31,6 +31,7 @@
                 <a href="user?action=list" class="btn btn-primary btn-lg">Users</a>
                 <a href="facility?action=list" class="btn btn-primary btn-lg">Facilities</a>
                 <a href="offer?action=list" class="btn btn-primary btn-lg">Offers</a>
+                <a href="gallery?action=list" class="btn btn-primary btn-lg">Gallery</a>
                 <a href="reservation?action=list" class="btn btn-primary btn-lg">Reservations</a>
                 <a href="order?action=list" class="btn btn-primary btn-lg">Orders</a>
                 <a href="payment?action=list" class="btn btn-primary btn-lg">Payments</a>
