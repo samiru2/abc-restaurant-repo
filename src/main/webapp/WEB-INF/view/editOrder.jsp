@@ -1,39 +1,58 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" isELIgnored="false"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.abc.model.Order" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Edit Order</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .container {
+            margin-top: 50px;
+            max-width: 600px;
+        }
+        .btn-primary {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Edit Order</h2>
-        <form action="order?action=update" method="post">
-            <input type="hidden" name="orderID" value="${order.orderID}">
-            <div class="mb-3">
+    <div class="container">
+        <h1 class="mb-4">Edit Order</h1>
+        <form action="order" method="post">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="orderID" value="<%= ((Order)request.getAttribute("order")).getOrderID() %>">
+            
+            <div class="form-group">
                 <label for="userID" class="form-label">User ID:</label>
-                <input type="number" class="form-control" id="userID" name="userID" value="${order.userID}" required>
+                <input type="text" id="userID" name="userID" class="form-control" value="<%= ((Order)request.getAttribute("order")).getUserID() %>" required>
             </div>
-            <div class="mb-3">
-                <label for="menuID" class="form-label">Menu ID:</label>
-                <input type="number" class="form-control" id="menuID" name="menuID" value="${order.menuID}" required>
+            
+            <div class="form-group">
+                <label for="orderDetails" class="form-label">Order Details:</label>
+                <input type="text" id="orderDetails" name="orderDetails" class="form-control" value="<%= ((Order)request.getAttribute("order")).getOrderDetails() %>" required>
             </div>
-            <div class="mb-3">
-                <label for="type" class="form-label">Type:</label>
-                <input type="text" class="form-control" id="type" name="type" value="${order.type}" required>
+            
+            <div class="form-group">
+                <label for="orderDate" class="form-label">Order Date:</label>
+                <input type="date" id="orderDate" name="orderDate" class="form-control" value="<%= ((Order)request.getAttribute("order")).getOrderDate() %>" required>
             </div>
-            <div class="mb-3">
+            
+            <div class="form-group">
                 <label for="totalPrice" class="form-label">Total Price:</label>
-                <input type="number" step="0.01" class="form-control" id="totalPrice" name="totalPrice" value="${order.totalPrice}" required>
+                <input type="number" id="totalPrice" name="totalPrice" class="form-control" step="0.01" value="<%= ((Order)request.getAttribute("order")).getTotalPrice() %>" required>
             </div>
-            <div class="mb-3">
+            
+            <div class="form-group">
                 <label for="status" class="form-label">Status:</label>
-                <input type="text" class="form-control" id="status" name="status" value="${order.status}">
+                <input type="text" id="status" name="status" class="form-control" value="<%= ((Order)request.getAttribute("order")).getStatus() %>" required>
             </div>
+            
             <button type="submit" class="btn btn-primary">Update Order</button>
         </form>
+        <a href="order?action=list" class="btn btn-secondary mt-3">Back to Order List</a>
     </div>
 </body>
 </html>

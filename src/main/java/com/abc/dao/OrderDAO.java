@@ -13,7 +13,7 @@ import com.abc.model.Order;
 public class OrderDAO {
 
     public void addOrder(Order order) {
-        String query = "INSERT INTO orders (userID, menuID, type, totalPrice, status) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO orders (userID, orderDetails, orderDate, totalPrice, status) VALUES (?, ?, ?, ?, ?)";
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -21,8 +21,8 @@ public class OrderDAO {
             connection = DBConnectionFactory.getConnection();
             statement = connection.prepareStatement(query);
             statement.setInt(1, order.getUserID());
-            statement.setInt(2, order.getMenuID());
-            statement.setString(3, order.getType());
+            statement.setString(2, order.getOrderDetails());
+            statement.setString(3, order.getOrderDate());
             statement.setDouble(4, order.getTotalPrice());
             statement.setString(5, order.getStatus());
             statement.executeUpdate();
@@ -38,7 +38,7 @@ public class OrderDAO {
     }
 
     public Order getOrderById(int orderID) {
-        String query = "SELECT * FROM orders WHERE orderID = ?";
+        String query = "SELECT o.*, u.username, u.phone, u.email FROM orders o JOIN users u ON o.userID = u.userID WHERE o.orderID = ?";
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -54,10 +54,13 @@ public class OrderDAO {
                 order = new Order(
                         resultSet.getInt("orderID"),
                         resultSet.getInt("userID"),
-                        resultSet.getInt("menuID"),
-                        resultSet.getString("type"),
+                        resultSet.getString("orderDetails"),
+                        resultSet.getString("orderDate"),
                         resultSet.getDouble("totalPrice"),
-                        resultSet.getString("status")
+                        resultSet.getString("status"),
+                        resultSet.getString("username"),
+                        resultSet.getString("phone"),
+                        resultSet.getString("email")
                 );
             }
         } catch (SQLException e) {
@@ -75,7 +78,7 @@ public class OrderDAO {
     }
 
     public void updateOrder(Order order) {
-        String query = "UPDATE orders SET userID = ?, menuID = ?, type = ?, totalPrice = ?, status = ? WHERE orderID = ?";
+        String query = "UPDATE orders SET userID = ?, orderDetails = ?, orderDate = ?, totalPrice = ?, status = ? WHERE orderID = ?";
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -83,8 +86,8 @@ public class OrderDAO {
             connection = DBConnectionFactory.getConnection();
             statement = connection.prepareStatement(query);
             statement.setInt(1, order.getUserID());
-            statement.setInt(2, order.getMenuID());
-            statement.setString(3, order.getType());
+            statement.setString(2, order.getOrderDetails());
+            statement.setString(3, order.getOrderDate());
             statement.setDouble(4, order.getTotalPrice());
             statement.setString(5, order.getStatus());
             statement.setInt(6, order.getOrderID());
@@ -123,7 +126,7 @@ public class OrderDAO {
 
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
-        String query = "SELECT * FROM orders ORDER BY orderID DESC";
+        String query = "SELECT o.*, u.username, u.phone, u.email FROM orders o JOIN users u ON o.userID = u.userID ORDER BY o.orderID DESC";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -137,10 +140,13 @@ public class OrderDAO {
                 Order order = new Order(
                         resultSet.getInt("orderID"),
                         resultSet.getInt("userID"),
-                        resultSet.getInt("menuID"),
-                        resultSet.getString("type"),
+                        resultSet.getString("orderDetails"),
+                        resultSet.getString("orderDate"),
                         resultSet.getDouble("totalPrice"),
-                        resultSet.getString("status")
+                        resultSet.getString("status"),
+                        resultSet.getString("username"),
+                        resultSet.getString("phone"),
+                        resultSet.getString("email")
                 );
                 orders.add(order);
             }

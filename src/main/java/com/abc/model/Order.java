@@ -3,30 +3,38 @@ package com.abc.model;
 public class Order {
     private int orderID;
     private int userID;
-    private int menuID;
-    private String type;
+    private String orderDetails;
+    private String orderDate;
     private double totalPrice;
     private String status;
+    private String username;
+    private String phone;
+    private String email;
 
-    public Order(int orderID, int userID, int menuID, String type, double totalPrice, String status) {
+    // Constructors
+    public Order(int orderID, int userID, String orderDetails, String orderDate, double totalPrice, String status, String username, String phone, String email) {
         this.orderID = orderID;
         this.userID = userID;
-        this.menuID = menuID;
-        this.type = type;
+        this.orderDetails = orderDetails;
+        this.orderDate = orderDate;
         this.totalPrice = totalPrice;
         this.status = status;
+        this.username = username;
+        this.phone = phone;
+        this.email = email;
     }
 
-    public Order(int userID, int menuID, String type, double totalPrice, String status) {
+    public Order(int userID, String orderDetails, String orderDate, double totalPrice, String status) {
         this.userID = userID;
-        this.menuID = menuID;
-        this.type = type;
+        this.orderDetails = orderDetails;
+        this.orderDate = orderDate;
         this.totalPrice = totalPrice;
         this.status = status;
     }
 
     public Order() {}
 
+    // Getters and Setters
     public int getOrderID() {
         return orderID;
     }
@@ -43,20 +51,20 @@ public class Order {
         this.userID = userID;
     }
 
-    public int getMenuID() {
-        return menuID;
+    public String getOrderDetails() {
+        return orderDetails;
     }
 
-    public void setMenuID(int menuID) {
-        this.menuID = menuID;
+    public void setOrderDetails(String orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
-    public String getType() {
-        return type;
+    public String getOrderDate() {
+        return orderDate;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
     public double getTotalPrice() {
@@ -73,5 +81,29 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -1,63 +1,78 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.abc.model.Order" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>List Orders</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
+        body {
+            margin-top: 20px;
+        }
         .container {
-            margin-top: 50px;
+            margin-top: 30px;
         }
         .btn-primary {
             margin-bottom: 15px;
         }
-        .back-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
+        .btn-actions a {
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Orders List</h2>
-        <a href="order?action=add" class="btn btn-primary mb-3">Add New Order</a>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>User ID</th>
-                    <th>Menu ID</th>
-                    <th>Type</th>
-                    <th>Total Price</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="order" items="${orders}">
+    <div class="container">
+        <h1 class="mb-4">Order List</h1>
+        
+        <c:choose>
+            <c:when test="${userRole == 'admin'}">
+                <a href="order?action=add" class="btn btn-primary mb-3">Add New Order</a>
+            </c:when>
+        </c:choose>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
                     <tr>
-                        <td>${order.orderID}</td>
-                        <td>${order.userID}</td>
-                        <td>${order.menuID}</td>
-                        <td>${order.type}</td>
-                        <td>${order.totalPrice}</td>
-                        <td>${order.status}</td>
-                        <td>
-                            <a href="order?action=edit&id=${order.orderID}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="order?action=delete&id=${order.orderID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</a>
+                        <th>Order ID</th>
+                        <th>User ID</th>
+                        <th>Order Date</th>
+                        <th>Username</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Order Details</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% 
+                        List<Order> orders = (List<Order>) request.getAttribute("orders");
+                        for (Order order : orders) {
+                    %>
+                    <tr>
+                        <td><%= order.getOrderID() %></td>
+                        <td><%= order.getUserID() %></td>
+						<td><%= order.getOrderDate() %></td>
+                        <td><%= order.getUsername() %></td>
+                        <td><%= order.getPhone() %></td>
+                        <td><%= order.getEmail() %></td>
+                        <td><%= order.getOrderDetails() %></td>
+                        <td><%= order.getTotalPrice() %></td>
+                        <td><%= order.getStatus() %></td>
+                        <td class="btn-actions">
+                            <a href="order?action=edit&orderID=<%= order.getOrderID() %>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="order?action=delete&orderID=<%= order.getOrderID() %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this order?');">Delete</a>
                         </td>
                     </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <a href="Dashboard" class="btn btn-secondary back-button">
-        <i class="bi bi-arrow-left"></i> Back
-    </a>
 </body>
 </html>
