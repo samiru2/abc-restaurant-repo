@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.abc.model.User;
 import com.abc.service.UserService;
 
-@WebServlet("/user")
+@WebServlet(urlPatterns = {"/user", "/register"})
 public class UserController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,11 @@ public class UserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        if (action == null || action.equals("list")) {
+        String servletPath = request.getServletPath();
+
+        if ("/register".equals(servletPath)) {
+            showRegisterForm(request, response);
+        } else if (action == null || action.equals("list")) {
             listUsers(request, response);
         } else if (action.equals("add")) {
             showAddForm(request, response);
@@ -41,11 +45,16 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+
         if (action.equals("add")) {
             addUser(request, response);
         } else if (action.equals("update")) {
             updateUser(request, response);
         }
+    }
+
+    private void showRegisterForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("WEB-INF/view/register.jsp").forward(request, response);
     }
 
     private void listUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -70,17 +79,35 @@ public class UserController extends HttpServlet {
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String role = request.getParameter("role");
-
-        User user = new User(username, password, phone, email, role);
+        String fromRegistrationPage = request.getParameter("fromRegistrationPage");
 
         try {
+            if (userService.isPhoneNumberExists(phone)) {
+                request.setAttribute("errorMessage", "Account already exists with this phone number.");
+                showRegisterForm(request, response);
+                return;
+            }
+            
+            if (userService.isEmailExists(email)) {
+                request.setAttribute("errorMessage", "Account already exists with this email.");
+                showRegisterForm(request, response);
+                return;
+            }
+
+            User user = new User(username, password, phone, email, role);
             userService.addUser(user);
-            response.sendRedirect("user?action=list");
+
+            if ("true".equals(fromRegistrationPage) && "customer".equals(role)) {
+                response.sendRedirect(request.getContextPath() + "/customerLogin");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/user?action=list");
+            }
         } catch (Exception e) {
             request.setAttribute("errorMessage", e.getMessage());
             request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
         }
     }
+
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int userId;

@@ -7,25 +7,38 @@ public class Reservation {
     private String time;
     private int numberOfPeople;
     private String status;
+    private String message;
+    private String username;  
+    private String phone;     
+    private String email;     
 
-    public Reservation(int reservationID, int userID, String date, String time, int numberOfPeople, String status) {
+
+    public Reservation(int reservationID, int userID, String date, String time, int numberOfPeople, String status, String message, String username, String phone, String email) {
         this.reservationID = reservationID;
         this.userID = userID;
         this.date = date;
         this.time = time;
         this.numberOfPeople = numberOfPeople;
         this.status = status;
+        this.message = message;
+        this.username = username;
+        this.phone = phone;
+        this.email = email;
     }
 
-    public Reservation(int userID, String date, String time, int numberOfPeople, String status) {
+
+    public Reservation(int userID, String date, String time, int numberOfPeople, String status, String message) {
         this.userID = userID;
         this.date = date;
         this.time = time;
         this.numberOfPeople = numberOfPeople;
         this.status = status;
+        this.message = message;
     }
 
+
     public Reservation() {}
+
 
     public int getReservationID() {
         return reservationID;
@@ -73,5 +86,37 @@ public class Reservation {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getUsername() {  
+        return username;
+    }
+
+    public void setUsername(String username) {  
+        this.username = username;
+    }
+
+    public String getPhone() {  
+        return phone;
+    }
+
+    public void setPhone(String phone) {  
+        this.phone = phone;
+    }
+
+    public String getEmail() {  
+        return email;
+    }
+
+    public void setEmail(String email) {  
+        this.email = email;
     }
 }

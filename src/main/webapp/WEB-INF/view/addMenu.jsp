@@ -36,9 +36,14 @@
                 <input type="number" class="form-control" step="0.01" id="price" name="price" required>
             </div>
             <div class="form-group">
-                <label for="category">Category:</label>
-                <input type="text" class="form-control" id="category" name="category" required>
-            </div>
+    			<label for="category">Category:</label>
+    			<select class="form-control" id="category" name="category" required>
+        			<option value="Snack">Snack</option>
+        			<option value="Main Course">Main Course</option>
+        			<option value="Drinks">Drinks</option>
+        			<option value="Dessert">Dessert</option>
+    			</select>
+			</div>
             <div class="form-group">
                 <label for="image">Image URL:</label>
                 <input type="file" class="form-control" id="image" name="image">

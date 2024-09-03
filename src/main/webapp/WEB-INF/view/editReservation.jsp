@@ -22,7 +22,7 @@
 <body>
     <div class="container">
         <form action="reservation?action=update" method="post">
-            <input type="hidden" name="reservationID" value="${reservation.reservationID}">
+            <input type="hidden" name="id" value="${reservation.reservationID}">
             <div class="form-group">
                 <label for="userID">User ID:</label>
                 <input type="number" class="form-control" id="userID" name="userID" value="${reservation.userID}" required>
@@ -36,12 +36,16 @@
                 <input type="text" class="form-control" id="time" name="time" value="${reservation.time}" required>
             </div>
             <div class="form-group">
-                <label for="NumberOfPeople">Number of People:</label>
+                <label for="numberOfPeople">Number of People:</label>
                 <input type="number" class="form-control" id="numberOfPeople" name="numberOfPeople" value="${reservation.numberOfPeople}" required>
             </div>
             <div class="form-group">
                 <label for="status">Status:</label>
                 <input type="text" class="form-control" id="status" name="status" value="${reservation.status}">
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea class="form-control" id="message" name="message">${reservation.message}</textarea>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Update Reservation</button>
         </form>

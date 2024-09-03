@@ -5,6 +5,7 @@
 <head>
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
@@ -20,10 +21,27 @@
         .btn {
             margin-top: 20px;
         }
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: #dc3545;
+        }
+        .logout-btn:hover {
+            color: #c82333;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <form action="login" method="get" class="d-inline">
+            <button type="submit" class="btn logout-btn">
+                <i class="bi bi-box-arrow-right"></i>
+            </button>
+        </form>
+        
         <c:choose>
             <c:when test="${userRole == 'admin'}">
                 <h1 class="display-4">ABC Restaurant Admin Dashboard</h1>

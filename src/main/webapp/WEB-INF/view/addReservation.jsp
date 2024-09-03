@@ -36,12 +36,16 @@
                 <input type="text" class="form-control" id="time" name="time" required>
             </div>
             <div class="form-group">
-                <label for="NumberOfPeople">Number of People:</label>
+                <label for="numberOfPeople">Number of People:</label>
                 <input type="number" class="form-control" id="numberOfPeople" name="numberOfPeople" required>
             </div>
             <div class="form-group">
                 <label for="status">Status:</label>
                 <input type="text" class="form-control" id="status" name="status">
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea class="form-control" id="message" name="message"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Add Reservation</button>
         </form>

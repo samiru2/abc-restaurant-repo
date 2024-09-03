@@ -21,6 +21,12 @@
         .btn-actions a {
             margin-right: 10px;
         }
+        .back-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -50,29 +56,37 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% 
-                        List<Order> orders = (List<Order>) request.getAttribute("orders");
-                        for (Order order : orders) {
-                    %>
+                    <c:forEach var="order" items="${orders}">
                     <tr>
-                        <td><%= order.getOrderID() %></td>
-                        <td><%= order.getUserID() %></td>
-						<td><%= order.getOrderDate() %></td>
-                        <td><%= order.getUsername() %></td>
-                        <td><%= order.getPhone() %></td>
-                        <td><%= order.getEmail() %></td>
-                        <td><%= order.getOrderDetails() %></td>
-                        <td><%= order.getTotalPrice() %></td>
-                        <td><%= order.getStatus() %></td>
+                        <td>${order.orderID}</td>
+                        <td>${order.userID}</td>
+						<td>${order.orderDate}</td>
+                        <td>${order.username}</td>
+                        <td>${order.phone}</td>
+                        <td>${order.email}</td>
+                        <td>${order.orderDetails}</td>
+                        <td>${order.totalPrice}</td>
+                        <td>${order.status}</td>
                         <td class="btn-actions">
-                            <a href="order?action=edit&orderID=<%= order.getOrderID() %>" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="order?action=delete&orderID=<%= order.getOrderID() %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this order?');">Delete</a>
+                            <a href="order?action=edit&orderID=${order.orderID}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="order?action=delete&orderID=${order.orderID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this order?');">Delete</a>
+                            <c:if test="${order.status == 'pending'}">
+                                <form action="order" method="get" style="display:inline;">
+                                    <input type="hidden" name="orderID" value="${order.orderID}" />
+                                    <input type="hidden" name="action" value="accept" />
+                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                </form>
+                            </c:if>
                         </td>
                     </tr>
-                    <% } %>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
+        
     </div>
+    <a href="Dashboard" class="btn btn-secondary back-button">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
 </body>
 </html>

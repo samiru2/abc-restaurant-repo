@@ -68,7 +68,7 @@
             <button type="submit" class="btn btn-primary login-btn">Log In</button>
             <div class="create-account">
                 <p class="mb-0">Don't have an account?</p>
-                <a href="register.jsp">Sign Up</a>
+                <a href="register">Sign Up</a>
             </div>
         </form>
     </div>

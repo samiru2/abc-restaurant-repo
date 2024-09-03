@@ -36,9 +36,14 @@
                 <input type="number" class="form-control" id="price" name="price" step="0.01" value="${menu.price}" required>
             </div>
             <div class="form-group">
-                <label for="category">Category:</label>
-                <input type="text" class="form-control" id="category" name="category" value="${menu.category}" required>
-            </div>
+    			<label for="category">Category:</label>
+    			<select class="form-control" id="category" name="category" required>
+        			<option value="Snack" <c:if test="${menu.category == 'Snack'}">selected</c:if>>Snack</option>
+        			<option value="Main Course" <c:if test="${menu.category == 'Main Course'}">selected</c:if>>Main Course</option>
+        			<option value="Drinks" <c:if test="${menu.category == 'Drinks'}">selected</c:if>>Drinks</option>
+        			<option value="Dessert" <c:if test="${menu.category == 'Dessert'}">selected</c:if>>Dessert</option>
+    			</select>
+			</div>
             <div class="form-group">
                 <label for="image">Image URL:</label>
                 <input type="file" class="form-control" id="image" name="image">

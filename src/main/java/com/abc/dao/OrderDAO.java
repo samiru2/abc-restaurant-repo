@@ -163,4 +163,26 @@ public class OrderDAO {
 
         return orders;
     }
+    
+    public void acceptOrder(int orderID) {
+        String query = "UPDATE orders SET status = 'accepted' WHERE orderID = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DBConnectionFactory.getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, orderID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

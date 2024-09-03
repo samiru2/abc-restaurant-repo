@@ -50,7 +50,7 @@
             </tbody>
         </table>
     </div>
-    <a href="dashboard" class="btn btn-secondary back-button">
+    <a href="Dashboard" class="btn btn-secondary back-button">
         <i class="bi bi-arrow-left"></i> Back
     </a>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">

@@ -17,11 +17,20 @@
         .btn-primary {
             width: 100%;
         }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="text-center">Add User</h1>
+        <c:if test="${not empty errorMessage}">
+            <div class="alert alert-danger error-message">
+                ${errorMessage}
+            </div>
+        </c:if>
         <form action="user?action=add" method="post">
             <div class="form-group">
                 <label for="username">Username:</label>
@@ -50,7 +59,5 @@
             <button type="submit" class="btn btn-primary">Add User</button>
         </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
 </html>

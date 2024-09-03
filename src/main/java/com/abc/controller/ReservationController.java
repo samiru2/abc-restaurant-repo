@@ -35,6 +35,8 @@ public class ReservationController extends HttpServlet {
             showEditForm(request, response);
         } else if (action.equals("delete")) {
             deleteReservation(request, response);
+        } else if (action.equals("accept")) {
+            acceptReservation(request, response);
         }
     }
 
@@ -60,16 +62,20 @@ public class ReservationController extends HttpServlet {
         }
     }
 
-
     private void showAddForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("WEB-INF/view/addReservation.jsp").forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int reservationID = Integer.parseInt(request.getParameter("id"));
-        Reservation existingReservation = reservationService.getReservationById(reservationID);
-        request.setAttribute("reservation", existingReservation);
-        request.getRequestDispatcher("WEB-INF/view/editReservation.jsp").forward(request, response);
+        try {
+            Reservation reservation = reservationService.getReservationById(reservationID);
+            request.setAttribute("reservation", reservation);
+            request.getRequestDispatcher("WEB-INF/view/editReservation.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
+        }
     }
 
     private void addReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -77,30 +83,62 @@ public class ReservationController extends HttpServlet {
         String date = request.getParameter("date");
         String time = request.getParameter("time");
         int numberOfPeople = Integer.parseInt(request.getParameter("numberOfPeople"));
-        String status = request.getParameter("status");
+        String status = "pending";
+        String message = request.getParameter("message");
 
-        Reservation newReservation = new Reservation(userID, date, time, numberOfPeople, status);
-        reservationService.addReservation(newReservation);
-        response.sendRedirect("reservation?action=list");
+        Reservation reservation = new Reservation(userID, date, time, numberOfPeople, status, message);
+
+        try {
+            reservationService.addReservation(reservation);
+            request.setAttribute("successMessage", "Your reservation has been placed successfully.");
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", e.getMessage());
+        }
+        request.getRequestDispatcher("index.jsp#book-a-table").forward(request, response);
     }
 
     private void updateReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int reservationID = Integer.parseInt(request.getParameter("reservationID"));
+        int reservationID = Integer.parseInt(request.getParameter("id"));
         int userID = Integer.parseInt(request.getParameter("userID"));
         String date = request.getParameter("date");
         String time = request.getParameter("time");
         int numberOfPeople = Integer.parseInt(request.getParameter("numberOfPeople"));
         String status = request.getParameter("status");
+        String message = request.getParameter("message");
 
-        Reservation reservation = new Reservation(reservationID, userID, date, time, numberOfPeople, status);
-        reservationService.updateReservation(reservation);
-        response.sendRedirect("reservation?action=list");
+        Reservation updatedReservation = new Reservation(reservationID, userID, date, time, numberOfPeople, status, message, null, null, null);
+
+        try {
+            reservationService.updateReservation(updatedReservation);
+            response.sendRedirect("reservation?action=list");
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
+        }
     }
+
 
     private void deleteReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int reservationID = Integer.parseInt(request.getParameter("id"));
-        reservationService.deleteReservation(reservationID);
-        response.sendRedirect("reservation?action=list");
+        try {
+            reservationService.deleteReservation(reservationID);
+            response.sendRedirect("reservation?action=list");
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
+        }
+    }
+    
+    private void acceptReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int reservationID = Integer.parseInt(request.getParameter("id"));
+        try {
+            Reservation reservation = reservationService.getReservationById(reservationID);
+            reservation.setStatus("accepted");
+            reservationService.updateReservation(reservation);
+            response.sendRedirect("reservation?action=list");
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
+        }
     }
 }
-

@@ -31,9 +31,13 @@
                 <tr class="table-dark">
                     <th>Reservation ID</th>
                     <th>User ID</th>
+                    <th>Username</th>
                     <th>Date</th>
-                    <th>Time</th>
-                    <th>Number of People</th>
+                    <th>Time</th>                 
+                    <th>Phone</th>
+                    <th>Email</th>                                     
+                    <th>Number of People</th>                    
+                    <th>Message</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -43,13 +47,20 @@
                     <tr>
                         <td>${reservation.reservationID}</td>
                         <td>${reservation.userID}</td>
+                        <td>${reservation.username}</td>
                         <td>${reservation.date}</td>
                         <td>${reservation.time}</td>
-                        <td>${reservation.numberOfPeople}</td>
+                        <td>${reservation.phone}</td>
+                        <td>${reservation.email}</td>                        
+                        <td>${reservation.numberOfPeople}</td>                       
+                        <td>${reservation.message}</td>
                         <td>${reservation.status}</td>
                         <td>
                             <a href="reservation?action=edit&id=${reservation.reservationID}" class="btn btn-warning btn-sm">Edit</a>
                             <a href="reservation?action=delete&id=${reservation.reservationID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this reservation?');">Delete</a>
+                            <c:if test="${reservation.status == 'pending'}">
+                                <a href="reservation?action=accept&id=${reservation.reservationID}" class="btn btn-success btn-sm">Accept</a>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>

@@ -39,4 +39,10 @@ public class OrderService {
     public List<Order> getAllOrders() {
         return orderDAO.getAllOrders();
     }
+    
+    public void acceptOrder(int orderID) {
+        orderDAO.acceptOrder(orderID);
+    }
+
+    
 }

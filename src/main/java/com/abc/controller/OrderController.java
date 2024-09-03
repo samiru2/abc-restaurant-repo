@@ -34,6 +34,8 @@ public class OrderController extends HttpServlet {
             showEditForm(request, response);
         } else if (action.equals("delete")) {
             deleteOrder(request, response);
+        } else if (action.equals("accept")) {
+            acceptOrder(request, response); 
         }
     }
 
@@ -94,6 +96,12 @@ public class OrderController extends HttpServlet {
     private void deleteOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int orderID = Integer.parseInt(request.getParameter("orderID"));
         orderService.deleteOrder(orderID);
+        response.sendRedirect("order?action=list");
+    }
+    
+    private void acceptOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int orderID = Integer.parseInt(request.getParameter("orderID"));
+        orderService.acceptOrder(orderID);
         response.sendRedirect("order?action=list");
     }
 }

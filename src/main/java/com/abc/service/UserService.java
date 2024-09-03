@@ -44,14 +44,15 @@ public class UserService {
         return userDAO.getUserById(userId);
     }
 
-    /**
-     * Validates the login credentials.
-     * @param username The username entered by the user.
-     * @param password The password entered by the user.
-     * @return A User object if the credentials are valid; otherwise, null.
-     */
     public User validateLogin(String username, String password) {
-        // Call the DAO to get the user by username and password
         return userDAO.getUserByUsernameAndPassword(username, password);
+    }
+    
+    public boolean isPhoneNumberExists(String phoneNumber) throws Exception {
+        return userDAO.getUserByPhoneNumber(phoneNumber) != null;
+    }
+
+    public boolean isEmailExists(String email) throws Exception {
+        return userDAO.getUserByEmail(email) != null;
     }
 }
