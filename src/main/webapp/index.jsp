@@ -65,12 +65,12 @@
     <c:when test="${not empty loggedUser}">
         <c:choose>
             <c:when test="${userRole == 'customer'}">
-                <a class="btn-book-a-table d-none d-xl-block" href="index.jsp">
+                <a class="btn-book-a-table d-none d-xl-block" href="index">
                     Welcome <c:out value="${loggedUser.username}"/>
                 </a>
             </c:when>
             <c:otherwise>
-                <a class="btn-book-a-table d-none d-xl-block" href="index.jsp">
+                <a class="btn-book-a-table d-none d-xl-block" href="index">
                     Not a customer
                 </a>
             </c:otherwise>

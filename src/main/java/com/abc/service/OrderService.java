@@ -20,8 +20,8 @@ public class OrderService {
         return instance;
     }
 
-    public void addOrder(Order order) {
-        orderDAO.addOrder(order);
+    public int addOrder(Order order) {
+        return orderDAO.addOrder(order);
     }
 
     public Order getOrderById(int orderID) {
@@ -43,6 +43,4 @@ public class OrderService {
     public void acceptOrder(int orderID) {
         orderDAO.acceptOrder(orderID);
     }
-
-    
 }

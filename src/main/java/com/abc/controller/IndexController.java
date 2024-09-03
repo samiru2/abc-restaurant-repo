@@ -38,25 +38,21 @@ public class IndexController extends HttpServlet {
         menuService = MenuService.getInstance();
         facilityService = FacilityService.getInstance();
         galleryService = GalleryService.getInstance();
-        orderService = OrderService.getInstance(); // Initialize OrderService
+        orderService = OrderService.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // Fetch offers
             List<Offer> offers = offerService.getAllOffers();
             request.setAttribute("offers", offers);
             
-            // Fetch menus
             List<Menu> menus = menuService.getAllMenus();
             request.setAttribute("menus", menus);
 
-            // Fetch facilities
             List<Facility> facilities = facilityService.getAllFacilities();
             request.setAttribute("facilities", facilities);
             
-            // Fetch gallery items
             List<Gallery> galleries = galleryService.getAllGalleries();
             request.setAttribute("galleries", galleries); 
 
@@ -89,7 +85,11 @@ public class IndexController extends HttpServlet {
 
         order.setStatus("pending");
 
-        orderService.addOrder(order);
-        response.sendRedirect("order-success.jsp");
+        int orderID = orderService.addOrder(order);
+
+        Order completeOrder = orderService.getOrderById(orderID);
+
+        request.setAttribute("order", completeOrder);
+        request.getRequestDispatcher("WEB-INF/view/orderSuccess.jsp").forward(request, response);
     }
 }
