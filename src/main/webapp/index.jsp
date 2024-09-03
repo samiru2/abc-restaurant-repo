@@ -140,7 +140,7 @@
                     <div class="swiper-slide">
                         <div class="row gy-4 event-item">
                             <div class="col-lg-6">
-                                <img src="${offer.image}" class="img-fluid" alt="${offer.title}" style="height: 200px; object-fit: cover;">
+                                <img src="${offer.image}" class="img-fluid" alt="${offer.title}" style="width: 40%; object-fit: cover;">
                             </div>
                             <div class="col-lg-6 pt-4 pt-lg-0 content">
                                 <h3>${offer.title}</h3>
@@ -283,7 +283,7 @@
     
 
     <!-- Gallery Section -->
-    <section id="gallery" class="gallery section">
+<section id="gallery" class="gallery section">
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
         <p>Exotic Visuals at ABC Restaurant</p>
@@ -293,9 +293,9 @@
         <div class="row g-0">
             <c:forEach var="gallery" items="${galleries}">
                 <div class="col-lg-3 col-md-4">
-                    <div class="gallery-item">
+                    <div class="gallery-item" style="position: relative; width: 100%; padding-top: 75%; overflow: hidden;">
                         <a href="${gallery.image}" class="glightbox" data-gallery="images-gallery">
-                            <img src="${gallery.image}" alt="Gallery Image" class="img-fluid">
+                            <img src="${gallery.image}" alt="Gallery Image" class="img-fluid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: all ease-in-out 0.4s;">
                         </a>
                     </div>
                 </div><!-- End Gallery Item -->
@@ -482,7 +482,6 @@
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
   
-  	//Cart Modal
 	<!-- Cart Modal -->
 <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -504,11 +503,10 @@
                             </tr>
                         </thead>
                         <tbody id="cart-items">
-                            <!-- Cart items will be dynamically added here -->
                         </tbody>
                     </table>
                     <div class="text-end">
-                        <strong style="color: #3fc060;">Subtotal: Rs. <span id="cart-subtotal">0</span></strong>
+                        <strong style="color: #3fc060;">Total Price: Rs. <span id="cart-subtotal">0</span></strong>
                         <br>
                         <strong>Total: Rs. <span id="cart-total">0</span></strong>
                     </div>
