@@ -45,10 +45,10 @@
                 <nav id="navmenu" class="navmenu">
                     <ul>
                         <li><a href="#hero" class="active">Home<br></a></li>
-                        <li><a href="#about">About</a></li>
+                        <li><a href="#offers">Offers</a></li>
                         <li><a href="#menu">Menu</a></li>
-                        <li><a href="#specials">Facilities</a></li>
-                        <li><a href="#promotions">Promotions</a></li>
+                        <li><a href="#about">About</a></li>                      
+                        <li><a href="#facilities">Facilities</a></li>                        
                         <li><a href="#gallery">Gallery</a></li>
                         <li><a href="#contact">Contact</a></li>
                         <li id="cart-icon" class="hidden-cart">
@@ -89,6 +89,7 @@
 
 
   <main class="main">
+  
 
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
@@ -102,16 +103,17 @@
             <p data-aos="fade-up" data-aos-delay="200">Sri Lanka's Popular Restaurant Chain</p>
             <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
               <a href="#menu" class="cta-btn">Our Menu</a>
-              <a href="tablebooking.html" class="cta-btn">Book a Table</a>
+              <a href="#book-a-table" class="cta-btn">Book a Table</a>
             </div>
           </div>
         </div>
       </div>
 
     </section><!-- /Hero Section -->
+    
 
-    <!-- Promotion Section -->
-    <section id="promotions" class="events section">
+    <!-- Offer Section -->
+    <section id="offers" class="events section">
     <div class="container section-title" data-aos="fade-up">
         <p style="text-align: center;">Offers</p>
     </div>
@@ -159,7 +161,7 @@
             <div class="swiper-pagination"></div>
         </div>
     </div>
-</section><!-- /Promotion Section -->
+</section><!-- /Offer Section -->
 
     
     <!-- Menu Section -->
@@ -231,19 +233,18 @@
         </div>
       </div>
     </section><!-- /About Section -->
+    
 
    <!-- Facility Section -->
-<section id="specials" class="specials section">
+<section id="facilities" class="specials section">
 
-  <!-- Section Title -->
   <div class="container section-title" data-aos="fade-up" style="background: rgba(41, 38, 31, 0.8);">
     <p style="text-align: center;">Our Facilities</p>
-  </div><!-- End Section Title -->
+  </div>
 
   <div class="container" data-aos="fade-up" data-aos-delay="100" style="background: rgba(41, 38, 31, 0.8);">
 
     <div class="row">
-      <!-- Facility Navigation -->
       <div class="col-lg-3">
         <ul class="nav nav-tabs flex-column">
           <c:forEach var="facility" items="${facilities}" varStatus="status">
@@ -254,9 +255,8 @@
             </li>
           </c:forEach>
         </ul>
-      </div><!-- End Facility Navigation -->
+      </div>
 
-      <!-- Facility Details -->
       <div class="col-lg-9 mt-4 mt-lg-0">
         <div class="tab-content">
           <c:forEach var="facility" items="${facilities}" varStatus="status">
@@ -273,22 +273,17 @@
             </div>
           </c:forEach>
         </div>
-      </div><!-- End Facility Details -->
+      </div>
     </div>
-
   </div>
-
 </section><!-- /Facility Section -->
 
     
-
     <!-- Gallery Section -->
 <section id="gallery" class="gallery section">
-    <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
         <p>Exotic Visuals at ABC Restaurant</p>
-    </div><!-- End Section Title -->
-
+    </div>
     <div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
         <div class="row g-0">
             <c:forEach var="gallery" items="${galleries}">
@@ -298,23 +293,20 @@
                             <img src="${gallery.image}" alt="Gallery Image" class="img-fluid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: all ease-in-out 0.4s;">
                         </a>
                     </div>
-                </div><!-- End Gallery Item -->
+                </div>
             </c:forEach>
         </div>
     </div>
 </section><!-- End Gallery Section -->
 
+
 <!-- Book A Table Section -->
 <section id="book-a-table" class="book-a-table section" style="background: rgba(41, 38, 31, 0.8); padding: 20px; border-radius: 8px; color: white;">
-
-  <!-- Section Title -->
   <div class="container section-title" data-aos="fade-up">
     <p style="text-align: center;">Book a Table</p>
-  </div><!-- End Section Title -->
-
+  </div>
   <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-    <!-- Display Success or Error Messages -->
     <c:if test="${not empty successMessage}">
       <div class="alert alert-success" role="alert" id="reservation-message">
         ${successMessage}
@@ -338,7 +330,7 @@
           <input type="time" class="form-control" name="time" id="time" placeholder="Time" required>
         </div>
         <div class="col-lg-4 col-md-6">
-          <input type="number" name="numberOfPeople" class="form-control" id="numberOfPeople" placeholder="# of people" required>
+          <input type="number" name="numberOfPeople" class="form-control" id="numberOfPeople" placeholder="Number of people" required>
         </div>
         <div class="col-lg-4 col-md-6" style="display: none;">
           <input type="text" name="status" class="form-control" id="status" placeholder="Status" value="pending" readonly>
@@ -352,22 +344,17 @@
       <div class="text-center mt-3">
         <button type="submit">Book a Table</button>
       </div>
-    </form><!-- End Reservation Form -->
-
+    </form>
   </div>
-
 </section><!-- /Book A Table Section -->
-
 
 
     <!-- Contact Section -->
     <section id="contact" class="contact section">
 
-      <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <p>Contact Us</p>
-      </div><!-- End Section Title -->
-
+      </div>
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row gy-4">
           <div class="col-lg-4">
@@ -377,71 +364,55 @@
                 <h3>Location</h3>
                 <p>432 DS Senanayake Street Kandy, Sri Lanka</p>
               </div>
-            </div><!-- End Info Item -->
-
+            </div>
             <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
               <i class="bi bi-telephone flex-shrink-0"></i>
               <div>
                 <h3>Open Hours</h3>
                 <p>Monday-Saturday:<br>8:00 AM - 10:00 PM</p>
               </div>
-            </div><!-- End Info Item -->
-
+            </div>
             <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
               <i class="bi bi-telephone flex-shrink-0"></i>
               <div>
                 <h3>Call Us</h3>
                 <p>+94 0202 58207</p>
               </div>
-            </div><!-- End Info Item -->
-
+            </div>
             <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
               <i class="bi bi-envelope flex-shrink-0"></i>
               <div>
                 <h3>Email Us</h3>
                 <p>ABCRestaurant@gmail.com</p>
               </div>
-            </div><!-- End Info Item -->
-
+            </div>
           </div>
 
           <div class="col-lg-8">
-            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
-              <div class="row gy-4">
-
-                <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                </div>
-
-                <div class="col-md-6 ">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                </div>
-
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                </div>
-
-                <div class="col-md-12">
-                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                </div>
-
-                <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                  <button type="submit">Send Message</button>
-                </div>
-
-              </div>
-            </form>
-          </div><!-- End Contact Form -->
-
+		  <form id="contactForm" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+		    <div class="row gy-4">
+		
+		      <div class="col-md-12">
+		        <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+		      </div>
+		
+		      <div class="col-md-12">
+		        <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+		      </div>
+		
+		      <div class="col-md-12">
+		        <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+		      </div>
+		
+		      <div class="col-md-12 text-center">
+		        <button type="button" class="btn btn-success" onclick="sendEmail()">Send Message</button>
+		      </div>
+		    </div>
+		  </form>
+		</div>
         </div>
-
       </div>
-
-    </section><!-- /Contact Section -->
+    </section>
 
   </main>
 

@@ -396,8 +396,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-//Book a table for logged in customers
-document.getElementById('reservationForm').addEventListener('submit', function(event) {
+	//Book a table for logged in customers
+	document.getElementById('reservationForm').addEventListener('submit', function(event) {
        const userID = document.getElementById('user-id-input').value;
 
        if (!userID || userID.trim() === "") {
@@ -414,6 +414,22 @@ document.getElementById('reservationForm').addEventListener('submit', function(e
          }, 30000);
        }
 	});
+	
+	
+	//Send Email
+	function sendEmail() {
+	            const form = document.getElementById('contactForm');
+	            const name = form.querySelector('input[name="name"]').value;
+	            const subject = form.querySelector('input[name="subject"]').value;
+	            const message = form.querySelector('textarea[name="message"]').value;
+
+	            // Format the email body with explicit newlines
+	            const formattedMessage = `Name: ${name}\nMessage: ${message}`;
+	            const mailtoLink = `mailto:contact@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(formattedMessage)}`;
+
+	            window.location.href = mailtoLink;
+	        }
+	
 
 
 
