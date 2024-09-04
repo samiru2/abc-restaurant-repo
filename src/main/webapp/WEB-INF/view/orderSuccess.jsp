@@ -30,13 +30,11 @@
                         <li>${item}</li>
                     </c:forEach>
                 </ul>
-                <h5>Bill Summary</h5>
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Total</th>
-                        <td>Rs. ${order.totalPrice}</td>
-                    </tr>
-                </table>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5>Amount</h5>
+                    <h5 class="mb-0">Rs. ${order.totalPrice}</h5>
+                </div>
             </div>
             <div class="card-footer text-center">
                 <a href="index" class="btn btn-primary">Continue Shopping</a>

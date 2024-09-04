@@ -44,7 +44,7 @@ public class DownloadBillController extends HttpServlet {
             title.setSpacingAfter(10);
             
             PdfPCell titleCell = new PdfPCell(title);
-            titleCell.setBackgroundColor(new BaseColor(40, 167, 69));
+            titleCell.setBackgroundColor(new BaseColor(40, 167, 69)); 
             titleCell.setPadding(10);
             titleCell.setBorder(Rectangle.NO_BORDER);
 

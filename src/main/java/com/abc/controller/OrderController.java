@@ -35,7 +35,9 @@ public class OrderController extends HttpServlet {
         } else if (action.equals("delete")) {
             deleteOrder(request, response);
         } else if (action.equals("accept")) {
-            acceptOrder(request, response); 
+            acceptOrder(request, response);
+        } else if (action.equals("downloadPdf")) {
+            downloadPdf(request, response);
         }
     }
 
@@ -103,6 +105,20 @@ public class OrderController extends HttpServlet {
         int orderID = Integer.parseInt(request.getParameter("orderID"));
         orderService.acceptOrder(orderID);
         response.sendRedirect("order?action=list");
+    }
+    
+    private void downloadPdf(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "attachment;filename=OrderReport.pdf");
+
+            List<Order> orders = orderService.getAllOrders();
+
+            SalesReportGenerator.generateOrderReportPdf(orders, response.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating PDF");
+        }
     }
 }
 

@@ -12,6 +12,7 @@
             background-color: #f8f9fa;
             text-align: center;
             padding-top: 50px;
+            position: relative;
         }
         .container {
             max-width: 450px;
@@ -21,27 +22,44 @@
         .btn {
             margin-top: 20px;
         }
-        .logout-btn {
+        .logout-btn,
+        .download-btn {
             position: absolute;
             top: 10px;
-            right: 10px;
             background: transparent;
             border: none;
             color: #dc3545;
         }
+        .logout-btn {
+            right: 10px;
+        }
+        .download-btn {
+            left: 10px;
+            background-color: #b71d1d;
+            color: #fff;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        .download-btn:hover,
         .logout-btn:hover {
-            color: #c82333;
+            color: #c82333;;
         }
     </style>
 </head>
 <body>
+    <form action="order" method="get" class="d-inline">
+        <button type="submit" name="action" value="downloadPdf" class="btn download-btn">
+            Download Performance Report
+        </button>
+    </form>
+    
+    <form action="login" method="get" class="d-inline">
+        <button type="submit" class="btn logout-btn">
+            <i class="bi bi-box-arrow-right"></i>
+        </button>
+    </form>
+    
     <div class="container">
-        <form action="login" method="get" class="d-inline">
-            <button type="submit" class="btn logout-btn">
-                <i class="bi bi-box-arrow-right"></i>
-            </button>
-        </form>
-        
         <c:choose>
             <c:when test="${userRole == 'admin'}">
                 <h1 class="display-4">ABC Restaurant Admin Dashboard</h1>
