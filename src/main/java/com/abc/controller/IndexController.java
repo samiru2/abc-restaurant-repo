@@ -66,30 +66,6 @@ public class IndexController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userID = request.getParameter("userID");
-        String orderDetails = request.getParameter("orderDetails");
-        String totalPrice = request.getParameter("totalPrice");
-
-        String orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-        Order order = new Order();
-        order.setUserID(Integer.parseInt(userID));
-        order.setOrderDetails(orderDetails);
-        order.setOrderDate(orderDate);
-
-        try {
-            order.setTotalPrice(Double.parseDouble(totalPrice));
-        } catch (NumberFormatException e) {
-            order.setTotalPrice(0.0);
-        }
-
-        order.setStatus("pending");
-
-        int orderID = orderService.addOrder(order);
-
-        Order completeOrder = orderService.getOrderById(orderID);
-
-        request.setAttribute("order", completeOrder);
-        request.getRequestDispatcher("WEB-INF/view/orderSuccess.jsp").forward(request, response);
+        
     }
 }

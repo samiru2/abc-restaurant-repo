@@ -49,7 +49,7 @@
 <body>
     <form action="order" method="get" class="d-inline">
         <button type="submit" name="action" value="downloadPdf" class="btn download-btn">
-            Download Performance Report
+            Download Sales Report
         </button>
     </form>
     

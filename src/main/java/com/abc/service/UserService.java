@@ -55,4 +55,9 @@ public class UserService {
     public boolean isEmailExists(String email) throws Exception {
         return userDAO.getUserByEmail(email) != null;
     }
+    
+    public String getUserEmailById(int userId) {
+        User user = userDAO.getUserById(userId);
+        return user != null ? user.getEmail() : null;
+    }
 }

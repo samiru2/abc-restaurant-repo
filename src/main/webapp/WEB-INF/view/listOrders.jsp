@@ -37,12 +37,7 @@
 <body>
     <div class="container">
         <h1 class="mb-4">Order List</h1>
-        
-        <c:choose>
-            <c:when test="${userRole == 'admin'}">
                 <a href="order?action=add" class="btn btn-primary">Add New Order</a>
-            </c:when>
-        </c:choose>
         
         <!-- Pending Orders Table -->
         <h2 class="mb-3" style="color: red;">Pending</h2>

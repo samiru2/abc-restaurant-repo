@@ -461,7 +461,7 @@
                 <h5 class="modal-title" id="cartModalLabel">Your Cart</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="cartForm" action="index" method="post">
+            <form id="cartForm" action="order" method="post">
                 <div class="modal-body">
                     <table class="table table-hover">
                         <thead>

@@ -11,17 +11,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.abc.model.Reservation;
+import com.abc.model.User;
 import com.abc.service.ReservationService;
+import com.abc.service.UserService;
+import com.abc.util.EmailUtility;
 
 @WebServlet("/reservation")
 public class ReservationController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private ReservationService reservationService;
+    private UserService userService;
 
     @Override
     public void init() throws ServletException {
         reservationService = ReservationService.getInstance();
+        userService = UserService.getInstance();
     }
 
     @Override
@@ -135,6 +140,31 @@ public class ReservationController extends HttpServlet {
             Reservation reservation = reservationService.getReservationById(reservationID);
             reservation.setStatus("accepted");
             reservationService.updateReservation(reservation);
+
+            // Fetch user email
+            User user = userService.getUserById(reservation.getUserID());
+            String userEmail = user.getEmail();
+
+            // Prepare email content
+            String subject = "Reservation Confirmation - ABC Restaurant";
+            String message = "Dear " + user.getUsername() + ",\n\n" +
+                             "Your reservation has been accepted!\n\n" +
+                             "Reservation Details\n" +
+                             "Reservation ID: " + reservation.getReservationID() + "\n" +
+                             "Date: " + reservation.getDate() + "\n" +
+                             "Time: " + reservation.getTime() + "\n" +
+                             "Number of People: " + reservation.getNumberOfPeople() + "\n\n" +
+                             "We look forward to serving you!\n\n" +
+                             "Best regards,\n" +
+                             "ABC Restaurant";
+
+            // Send confirmation email
+            try {
+                EmailUtility.sendEmail(userEmail, subject, message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             response.sendRedirect("reservation?action=list");
         } catch (Exception e) {
             request.setAttribute("errorMessage", e.getMessage());

@@ -234,7 +234,6 @@ public class UserDAO {
         return user;
     }
 
-    // New method to check if an email already exists
     public User getUserByEmail(String email) {
         User user = null;
         String query = "SELECT * FROM users WHERE email = ?";
@@ -270,5 +269,35 @@ public class UserDAO {
         }
 
         return user;
+    }
+    
+    public String getUserEmailById(int userId) {
+        String query = "SELECT email FROM users WHERE userId = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String email = null;
+
+        try {
+            connection = DBConnectionFactory.getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                email = resultSet.getString("email");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return email;
     }
 }

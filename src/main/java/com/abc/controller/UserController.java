@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.abc.model.User;
 import com.abc.service.UserService;
+import com.abc.util.EmailUtility; 
 
 @WebServlet(urlPatterns = {"/user", "/register"})
 public class UserController extends HttpServlet {
@@ -87,7 +88,7 @@ public class UserController extends HttpServlet {
                 showRegisterForm(request, response);
                 return;
             }
-            
+
             if (userService.isEmailExists(email)) {
                 request.setAttribute("errorMessage", "Account already exists with this email.");
                 showRegisterForm(request, response);
@@ -96,6 +97,20 @@ public class UserController extends HttpServlet {
 
             User user = new User(username, password, phone, email, role);
             userService.addUser(user);
+
+            String subject = "Welcome to ABC Restaurant!";
+            String message = "Dear " + username + ",\n\n"
+                           + "You have successfully registered at ABC Restaurant.\n"
+                           + "We are excited to have you as our customer.\n\n"
+                           + "Best regards,\n"
+                           + "ABC Restaurant Team";
+
+            try {
+                EmailUtility.sendEmail(email, subject, message);
+                System.out.println("Registration email sent to " + email);
+            } catch (Exception e) {
+                System.out.println("Failed to send email: " + e.getMessage());
+            }
 
             if ("true".equals(fromRegistrationPage) && "customer".equals(role)) {
                 response.sendRedirect(request.getContextPath() + "/customerLogin");
@@ -107,7 +122,6 @@ public class UserController extends HttpServlet {
             request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
         }
     }
-
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int userId;
