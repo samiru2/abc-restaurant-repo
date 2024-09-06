@@ -11,7 +11,6 @@ public class Order {
     private String phone;
     private String email;
 
-    // Constructors
     public Order(int orderID, int userID, String orderDetails, String orderDate, double totalPrice, String status, String username, String phone, String email) {
         this.orderID = orderID;
         this.userID = userID;
@@ -34,7 +33,6 @@ public class Order {
 
     public Order() {}
 
-    // Getters and Setters
     public int getOrderID() {
         return orderID;
     }
