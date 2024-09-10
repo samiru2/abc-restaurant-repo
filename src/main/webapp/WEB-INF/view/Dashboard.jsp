@@ -70,13 +70,11 @@
                 <a href="gallery?action=list" class="btn btn-primary btn-lg">Gallery</a>
                 <a href="reservation?action=list" class="btn btn-primary btn-lg">Reservations</a>
                 <a href="order?action=list" class="btn btn-primary btn-lg">Orders</a>
-                <a href="payment?action=list" class="btn btn-primary btn-lg">Payments</a>
             </c:when>
             <c:otherwise>
                 <h1 class="display-4">ABC Restaurant Staff Dashboard</h1>
                 <a href="reservation?action=list" class="btn btn-primary btn-lg">Reservations</a>
                 <a href="order?action=list" class="btn btn-primary btn-lg">Orders</a>
-                <a href="payment?action=list" class="btn btn-primary btn-lg">Payments</a>
             </c:otherwise>
         </c:choose>
     </div>

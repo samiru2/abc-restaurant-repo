@@ -30,7 +30,6 @@ public class IndexController extends HttpServlet {
     private MenuService menuService;
     private FacilityService facilityService;
     private GalleryService galleryService;
-    private OrderService orderService;
 
     @Override
     public void init() throws ServletException {
@@ -38,7 +37,6 @@ public class IndexController extends HttpServlet {
         menuService = MenuService.getInstance();
         facilityService = FacilityService.getInstance();
         galleryService = GalleryService.getInstance();
-        orderService = OrderService.getInstance();
     }
 
     @Override
