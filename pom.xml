@@ -10,12 +10,14 @@
     <url>http://maven.apache.org</url>
 
     <dependencies>
+        <!-- JSTL -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
 
+        <!-- MySQL Connector -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -40,18 +42,20 @@
         	<version>1.0.24</version>
     	</dependency>
 
+    <!-- iText Font Library (required for font mapping) -->
     	<dependency>
         	<groupId>com.itextpdf</groupId>
         	<artifactId>itext-asian</artifactId>
         	<version>5.2.0</version>
     	</dependency>
 
+        <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
-        </dependency>       
+        </dependency>
         
         <dependency>
     		<groupId>javax.mail</groupId>
@@ -69,6 +73,7 @@
     <build>
         <finalName>abc-restaurant-webapp</finalName>
         <plugins>
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -79,6 +84,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Maven War Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -86,7 +92,7 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
-            </plugin>            
+            </plugin>
         </plugins>
     </build>
 </project>
