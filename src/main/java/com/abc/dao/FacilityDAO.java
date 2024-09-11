@@ -12,30 +12,37 @@ import com.abc.model.Facility;
 
 public class FacilityDAO {
 
-    public void addFacility(Facility facility) {
-        String query = "INSERT INTO facilities (name, description, image) VALUES (?, ?, ?)";
-        Connection connection = null;
-        PreparedStatement statement = null;
+	public void addFacility(Facility facility) {
+	    String query = "INSERT INTO facilities (name, description, image) VALUES (?, ?, ?)";
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    ResultSet generatedKeys = null;
 
-        try {
-            connection = DBConnectionFactory.getConnection();
-            statement = connection.prepareStatement(query);
-            statement.setString(1, facility.getName());
-            statement.setString(2, facility.getDescription());
-            statement.setString(3, facility.getImage());
-            statement.executeUpdate();
-        } 
-        catch (SQLException e) {
-            e.printStackTrace();
-        } 
-        finally {
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	    try {
+	        connection = DBConnectionFactory.getConnection();
+	        statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+	        statement.setString(1, facility.getName());
+	        statement.setString(2, facility.getDescription());
+	        statement.setString(3, facility.getImage());
+	        int affectedRows = statement.executeUpdate();
+
+	        if (affectedRows > 0) {
+	            generatedKeys = statement.getGeneratedKeys();
+	            if (generatedKeys.next()) {
+	                facility.setFacilityId(generatedKeys.getInt(1));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (generatedKeys != null) generatedKeys.close();
+	            if (statement != null) statement.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 
     public List<Facility> getAllFacilities() throws SQLException {
         List<Facility> facilities = new ArrayList<>();

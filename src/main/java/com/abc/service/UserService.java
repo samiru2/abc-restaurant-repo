@@ -24,8 +24,8 @@ public class UserService {
         return instance;
     }
 
-    public void addUser(User user) {
-        userDAO.addUser(user);
+    public int addUser(User user) {
+        return userDAO.addUser(user);
     }
 
     public void updateUser(User user) {

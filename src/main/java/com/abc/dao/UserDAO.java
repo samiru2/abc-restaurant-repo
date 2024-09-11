@@ -12,30 +12,41 @@ import com.abc.model.User;
 
 public class UserDAO {
 
-    public void addUser(User user) {
-        String query = "INSERT INTO users (username, password, phone, email, role) VALUES (?, ?, ?, ?, ?)";
-        Connection connection = null;
-        PreparedStatement statement = null;
+	public int addUser(User user) {
+	    String query = "INSERT INTO users (username, password, phone, email, role) VALUES (?, ?, ?, ?, ?)";
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    ResultSet resultSet = null;
+	    int generatedId = -1;
 
-        try {
-            connection = DBConnectionFactory.getConnection();
-            statement = connection.prepareStatement(query);
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getPhone());
-            statement.setString(4, user.getEmail());
-            statement.setString(5, user.getRole());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	    try {
+	        connection = DBConnectionFactory.getConnection();
+	        statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+	        statement.setString(1, user.getUsername());
+	        statement.setString(2, user.getPassword());
+	        statement.setString(3, user.getPhone());
+	        statement.setString(4, user.getEmail());
+	        statement.setString(5, user.getRole());
+	        statement.executeUpdate();
+
+	        resultSet = statement.getGeneratedKeys();
+	        if (resultSet.next()) {
+	            generatedId = resultSet.getInt(1);
+	            System.out.println("Generated userId: " + generatedId);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultSet != null) resultSet.close();
+	            if (statement != null) statement.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return generatedId;
+	}
 
     public User getUserById(int userId) {
         String query = "SELECT * FROM users WHERE userId = ?";
@@ -88,7 +99,11 @@ public class UserDAO {
             statement.setString(4, user.getEmail());
             statement.setString(5, user.getRole());
             statement.setInt(6, user.getUserId());
-            statement.executeUpdate();
+            int rowsAffected = statement.executeUpdate();
+            
+            if (rowsAffected == 0) {
+                throw new SQLException("Updating user failed, no rows affected.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -99,6 +114,7 @@ public class UserDAO {
             }
         }
     }
+
 
     public void deleteUser(int userId) {
         String query = "DELETE FROM users WHERE userId = ?";

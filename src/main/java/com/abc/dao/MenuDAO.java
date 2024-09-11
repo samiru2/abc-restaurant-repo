@@ -16,30 +16,38 @@ public class MenuDAO {
 	    String query = "INSERT INTO menu (name, description, price, category, image) VALUES (?, ?, ?, ?, ?)";
 	    Connection connection = null;
 	    PreparedStatement statement = null;
+	    ResultSet generatedKeys = null;
 
 	    try {
 	        connection = DBConnectionFactory.getConnection();
-	        statement = connection.prepareStatement(query);
+	        statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 	        statement.setString(1, menu.getName());
 	        statement.setString(2, menu.getDescription());
 	        statement.setDouble(3, menu.getPrice());
 	        statement.setString(4, menu.getCategory());
 	        statement.setString(5, menu.getImage());
-	        statement.executeUpdate();
-	    } 
-	    catch (SQLException e) 
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-        	try {
-				statement.close();
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-        }
+
+	        int affectedRows = statement.executeUpdate();
+
+	        if (affectedRows > 0) {
+	            generatedKeys = statement.getGeneratedKeys();
+	            if (generatedKeys.next()) {
+	                menu.setMenuId(generatedKeys.getInt(1)); // Set the generated ID to the menu object
+	                System.out.println("Menu ID after addition: " + menu.getMenuId());
+	            }
+	        } else {
+	            System.out.println("Adding menu failed, no rows affected.");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (generatedKeys != null) generatedKeys.close();
+	            if (statement != null) statement.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 
     public List<Menu> getAllMenus() throws SQLException {
